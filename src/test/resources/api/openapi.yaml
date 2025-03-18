@@ -1,0 +1,237 @@
+openapi: 3.0.1
+info:
+  title: api-citizen
+  contact: {}
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+  version: '1.0'
+  description: API for managing citizen information
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+tags:
+  - name: Citizen
+    description: Citizen operations
+paths:
+  /api/v2/citizen/{personId}:
+    get:
+      tags:
+        - Citizen
+      summary: Show information about specific citizen
+      operationId: getCitizenById
+      parameters:
+        - name: personId
+          in: path
+          description: ID for specific citizen
+          required: true
+          schema:
+            type: string
+          example: fb47e26c-1c27-11ee-be56-0242ac120002
+        - name: showClassified
+          in: query
+          description: If true, include search for classified persons
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CitizenExtended"
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Problem"
+                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "500":
+          description: Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "503":
+          description: Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+
+  /api/v2/citizen/guid:
+    post:
+      tags:
+        - Citizen
+      summary: Create person
+      operationId: createCitizen
+      requestBody:
+        description: Classification code
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: string
+                format: uuid
+        "409":
+          description: Conflict
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  /api/v2/citizen/{personNumber}/guid:
+    get:
+      tags:
+        - Citizen
+      summary: Get the personId from Personal identity number
+      operationId: getPersonIdByPersonalNumber
+      parameters:
+        - name: personNumber
+          in: path
+          description: Personal identity number for specific citizen
+          required: true
+          schema:
+            type: string
+          example: "198001011234"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: string
+                format: uuid
+        "204":
+          description: No Content
+        "404":
+          description: Not Found
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+components:
+  schemas:
+    CitizenExtended:
+      type: object
+      properties:
+        personId:
+          type: string
+          format: uuid
+          description: Unique identifier for the citizen
+          example: fb47e26c-1c27-11ee-be56-0242ac120002
+        personalNumber:
+          type: string
+          description: Personal identity number
+          example: "198001011234"
+        givenname:
+          type: string
+          description: Given name
+          example: Test
+        lastname:
+          type: string
+          description: Last name
+          example: Testsson
+        gender:
+          type: string
+          description: Gender
+          example: "MALE"    # Remove enum, keep as example
+        civilStatus:
+          type: string
+          description: Civil status
+          example: "SINGLE"  # Remove enum, keep as example
+        classified:
+          type: string
+          description: Classification status if any
+        protectedNr:
+          type: string
+          description: Protection status if any
+        addresses:
+          type: array
+          items:
+            $ref: "#/components/schemas/CitizenAddress"
+
+    CitizenAddress:
+      type: object
+      properties:
+        address:
+          type: string
+          description: Street address
+          example: "Test Street 1"
+        city:
+          type: string
+          description: City
+          example: "Test City"
+        postalCode:
+          type: string
+          description: Postal code
+          example: "12345"
+        status:
+          type: string
+          description: Address status
+          example: "ACTIVE"
+
+    Problem:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+        title:
+          type: string
+        status:
+          type: integer
+          format: int32
+        detail:
+          type: string
+        instance:
+          type: string
+
+    ConstraintViolationProblem:
+      allOf:
+        - $ref: "#/components/schemas/Problem"
+        - type: object
+          properties:
+            violations:
+              type: array
+              items:
+                $ref: "#/components/schemas/Violation"
+
+    Violation:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            oneOf:
+              - $ref: "#/components/schemas/Problem"
+              - $ref: "#/components/schemas/ConstraintViolationProblem"
+
+    ServerError:
+      description: Server Error
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/Problem"
