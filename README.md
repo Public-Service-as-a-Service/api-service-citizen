@@ -33,16 +33,16 @@ _Manage citizen data._
 
 4. **Build and run the application:**
 
-    - Using Maven:
+   - Using Maven:
 
-      ```bash
-      mvn spring-boot:run
-      ```
-    - Using Gradle:
+     ```bash
+     mvn spring-boot:run
+     ```
+   - Using Gradle:
 
-      ```bash
-      gradle bootRun
-      ```
+     ```bash
+     gradle bootRun
+     ```
 
 ## Dependencies
 
@@ -123,7 +123,6 @@ spring:
   Adjust logging levels if necessary.
 
 ## Contributing
-
 
 ## License
 

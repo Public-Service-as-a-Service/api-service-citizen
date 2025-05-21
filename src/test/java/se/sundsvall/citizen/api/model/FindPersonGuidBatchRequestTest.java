@@ -15,50 +15,50 @@ import org.junit.jupiter.api.Test;
 
 class FindPersonGuidBatchRequestTest {
 
-    @Test
-    void testBean() {
-        assertThat(FindPersonGuidBatchRequest.class, allOf(
-                hasValidBeanConstructor(),
-                hasValidGettersAndSetters(),
-                hasValidBeanHashCode(),
-                hasValidBeanEquals(),
-                hasValidBeanToString()));
-    }
+	@Test
+	void testBean() {
+		assertThat(FindPersonGuidBatchRequest.class, allOf(
+			hasValidBeanConstructor(),
+			hasValidGettersAndSetters(),
+			hasValidBeanHashCode(),
+			hasValidBeanEquals(),
+			hasValidBeanToString()));
+	}
 
-    @Test
-    void testBuilderMethods() {
-        final var personalNumbers = List.of("198001011234", "198001011235");
-        final var page = 2;
-        final var limit = 25;
+	@Test
+	void testBuilderMethods() {
+		final var personalNumbers = List.of("198001011234", "198001011235");
+		final var page = 2;
+		final var limit = 25;
 
-        final var findPersonGuidBatchRequest = FindPersonGuidBatchRequest.create()
-                .withPersonalNumbers(personalNumbers)
-                .withPage(page)
-                .withLimit(limit);
+		final var findPersonGuidBatchRequest = FindPersonGuidBatchRequest.create()
+			.withPersonalNumbers(personalNumbers)
+			.withPage(page)
+			.withLimit(limit);
 
-        assertThat(findPersonGuidBatchRequest).isNotNull().hasNoNullFieldsOrProperties();
-        assertThat(findPersonGuidBatchRequest.getPersonalNumbers())
-                .isEqualTo(personalNumbers)
-                .hasSize(2)
-                .containsExactly("198001011234", "198001011235");
-        assertThat(findPersonGuidBatchRequest.getPage()).isEqualTo(page);
-        assertThat(findPersonGuidBatchRequest.getLimit()).isEqualTo(limit);
-    }
+		assertThat(findPersonGuidBatchRequest).isNotNull().hasNoNullFieldsOrProperties();
+		assertThat(findPersonGuidBatchRequest.getPersonalNumbers())
+			.isEqualTo(personalNumbers)
+			.hasSize(2)
+			.containsExactly("198001011234", "198001011235");
+		assertThat(findPersonGuidBatchRequest.getPage()).isEqualTo(page);
+		assertThat(findPersonGuidBatchRequest.getLimit()).isEqualTo(limit);
+	}
 
-    @Test
-    void testNoDirtOnCreatedBeanExceptDefaultValues() {
-        final var request = FindPersonGuidBatchRequest.create();
+	@Test
+	void testNoDirtOnCreatedBeanExceptDefaultValues() {
+		final var request = FindPersonGuidBatchRequest.create();
 
-        assertThat(request.getPersonalNumbers()).isNull();
-        assertThat(request.getPage()).isEqualTo(1);
-        assertThat(request.getLimit()).isEqualTo(100);
-    }
+		assertThat(request.getPersonalNumbers()).isNull();
+		assertThat(request.getPage()).isEqualTo(1);
+		assertThat(request.getLimit()).isEqualTo(100);
+	}
 
-    @Test
-    void testDefaultValues() {
-        final var request = new FindPersonGuidBatchRequest();
+	@Test
+	void testDefaultValues() {
+		final var request = new FindPersonGuidBatchRequest();
 
-        assertThat(request.getPage()).isEqualTo(1);
-        assertThat(request.getLimit()).isEqualTo(100);
-    }
+		assertThat(request.getPage()).isEqualTo(1);
+		assertThat(request.getLimit()).isEqualTo(100);
+	}
 }

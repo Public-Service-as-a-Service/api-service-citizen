@@ -14,17 +14,17 @@ import java.util.List;
 @Transactional
 public class CitizenAddressService {
 
-    private final CitizenAddressRepository citizenAddressRepository;
+	private final CitizenAddressRepository citizenAddressRepository;
 
-    public CitizenAddressService(CitizenAddressRepository citizenAddressRepository) {
-        this.citizenAddressRepository = citizenAddressRepository;
-    }
+	public CitizenAddressService(CitizenAddressRepository citizenAddressRepository) {
+		this.citizenAddressRepository = citizenAddressRepository;
+	}
 
-    public List<CitizenWithChangedAddress> getCitizensWithChangedAddress(final OffsetDateTime changedDateFrom) {
-        return citizenAddressRepository
-                .findAll(CitizenAddressSpecification.hasChangedAddressSince(changedDateFrom))
-                .stream()
-                .map(CitizenAddressMapper::toCitizenWithChangedAddress)
-                .toList();
-    }
+	public List<CitizenWithChangedAddress> getCitizensWithChangedAddress(final OffsetDateTime changedDateFrom) {
+		return citizenAddressRepository
+			.findAll(CitizenAddressSpecification.hasChangedAddressSince(changedDateFrom))
+			.stream()
+			.map(CitizenAddressMapper::toCitizenWithChangedAddress)
+			.toList();
+	}
 }

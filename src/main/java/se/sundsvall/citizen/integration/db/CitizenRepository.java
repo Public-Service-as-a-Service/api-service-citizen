@@ -15,10 +15,10 @@ import static se.sundsvall.citizen.integration.db.specification.CitizenSpecifica
 @CircuitBreaker(name = "CitizenRepository")
 public interface CitizenRepository extends JpaRepository<CitizenEntity, String>, JpaSpecificationExecutor<CitizenEntity> {
 
-    default Page<CitizenEntity> findAllByParameters(final String personId, final Pageable pageable, final boolean showClassified) {
-        return this.findAll(withPersonId(personId)
-                .and(withClassified(showClassified)), pageable);
-    }
+	default Page<CitizenEntity> findAllByParameters(final String personId, final Pageable pageable, final boolean showClassified) {
+		return this.findAll(withPersonId(personId)
+			.and(withClassified(showClassified)), pageable);
+	}
 
-    Optional<CitizenEntity> findByPersonalNumber(String personalNumber);
+	Optional<CitizenEntity> findByPersonalNumber(String personalNumber);
 }
