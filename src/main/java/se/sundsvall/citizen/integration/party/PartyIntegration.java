@@ -7,22 +7,21 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PartyIntegration {
-    private static final Logger LOG = LoggerFactory.getLogger(PartyIntegration.class);
-    private final PartyClient client;
-    private final ObjectMapper objectMapper;
+	private static final Logger LOG = LoggerFactory.getLogger(PartyIntegration.class);
+	private final PartyClient client;
+	private final ObjectMapper objectMapper;
 
-    public PartyIntegration(final PartyClient client, final ObjectMapper objectMapper) {
-        this.client = client;
-        this.objectMapper = objectMapper;
-    }
+	public PartyIntegration(final PartyClient client, final ObjectMapper objectMapper) {
+		this.client = client;
+		this.objectMapper = objectMapper;
+	}
 
-    public String getPartyId(final String legalId, String municipalityId, String type) {
-        try {
-            String answer = client.getPartyId(legalId, municipalityId, type);
-            return objectMapper.readValue(answer, String.class);
-        } catch (final Exception e) {
-            LOG.info("Unable to get this", e);
-            return null;
-        }
-    }
+	public String getPartyId(final String personNumber, String municipalityId, String type) {
+		try {
+			return client.getPartyId(personNumber, municipalityId, type);
+		} catch (final Exception e) {
+			LOG.info("Unable to get this", e);
+			return null;
+		}
+	}
 }

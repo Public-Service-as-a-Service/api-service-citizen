@@ -95,7 +95,7 @@ public class CitizenResource {
 	@ApiResponse(responseCode = "204", description = "No Content")
 	@ApiResponse(responseCode = "404", description = "Not Found")
 	public ResponseEntity<String> getPersonIdByPersonalNumber(
-		@Parameter(description = "Personal identity number for specific citizen") @PathVariable final String personNumber, final String municipalityId) {
+		@Parameter(description = "Personal identity number for specific citizen") @PathVariable final String personNumber, @RequestParam("municipalityId") final String municipalityId) {
 
 		return ok(citizenService.getPersonIdByPersonalNumber(personNumber, municipalityId));
 	}
@@ -117,10 +117,5 @@ public class CitizenResource {
 		@Valid @RequestBody ModelPostPerson person) {
 
 		return ok(citizenService.createPerson(person));
-	}
-	@GetMapping(path = "/test/{test}", produces = APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> getTest(@PathVariable String test) {
-		test = "Hello World";
-		return ok(test);
 	}
 }

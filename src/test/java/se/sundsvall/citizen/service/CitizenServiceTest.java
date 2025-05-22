@@ -224,12 +224,13 @@ class CitizenServiceTest {
 		// Arrange
 		final var personalNumber = "198001011234";
 		final var personId = UUID.randomUUID();
+		final var municipalityId = "2281";
 		final var citizenEntity = CitizenEntity.create().withPersonId(personId.toString());
 
 		when(citizenRepositoryMock.findByPersonalNumber(personalNumber)).thenReturn(Optional.of(citizenEntity));
 
 		// Act
-		final var result = citizenService.getPersonIdByPersonalNumber(personalNumber);
+		final var result = citizenService.getPersonIdByPersonalNumber(personalNumber, municipalityId);
 
 		// Assert
 		assertThat(result).isEqualTo(personId);
@@ -240,11 +241,12 @@ class CitizenServiceTest {
 	void getPersonIdByPersonalNumber_NotFound() {
 		// Arrange
 		final var personalNumber = "198001011234";
+		final var municipalityId = "2281";
 		when(citizenRepositoryMock.findByPersonalNumber(personalNumber)).thenReturn(Optional.empty());
 
 		// Act & Assert
 		final var exception = assertThrows(ThrowableProblem.class,
-			() -> citizenService.getPersonIdByPersonalNumber(personalNumber));
+			() -> citizenService.getPersonIdByPersonalNumber(personalNumber, municipalityId));
 
 		assertThat(exception.getStatus()).isEqualTo(NOT_FOUND);
 		assertThat(exception.getMessage())

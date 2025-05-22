@@ -151,8 +151,9 @@ class CitizenResourceTest {
 		// Arrange
 		final var personId = UUID.randomUUID();
 		final var personalNumber = "198001011234";
-		when(citizenServiceMock.getPersonIdByPersonalNumber(personalNumber))
-			.thenReturn(personId);
+		final var municipalityId = "2281";
+		when(citizenServiceMock.getPersonIdByPersonalNumber(personalNumber, municipalityId))
+			.thenReturn(String.valueOf(personId));
 
 		// Act
 		final var response = webTestClient.get()
@@ -166,7 +167,7 @@ class CitizenResourceTest {
 
 		// Assert
 		assertThat(response).isEqualTo(personId);
-		verify(citizenServiceMock).getPersonIdByPersonalNumber(personalNumber);
+		verify(citizenServiceMock).getPersonIdByPersonalNumber(personalNumber, municipalityId);
 	}
 
 	@Test
