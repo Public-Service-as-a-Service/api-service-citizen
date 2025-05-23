@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import se.sundsvall.citizen.integration.party.configuration.PartyIntegrationConfiguration;
 
-import static se.sundsvall.citizen.integration.party.configuration.PartyIntegrationConfiguration.CLIENT_ID;
+import static se.sundsvall.citizen.integration.party.configuration.PartyIntegrationConfiguration.INTEGRATION_NAME;
 
 @FeignClient(
-	name = CLIENT_ID,
+	name = INTEGRATION_NAME,
 	url = "${integration.citizen.base-url}",
 	configuration = PartyIntegrationConfiguration.class)
-@CircuitBreaker(name = CLIENT_ID)
+@CircuitBreaker(name = INTEGRATION_NAME)
 public interface PartyClient {
 	@GetMapping(value = "/{municipalityId}/{type}/{legalId}/partyId", produces = MediaType.TEXT_PLAIN_VALUE)
 
