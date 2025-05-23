@@ -12,7 +12,7 @@ import static se.sundsvall.citizen.integration.party.configuration.PartyIntegrat
 
 @FeignClient(
 	name = INTEGRATION_NAME,
-	url = "${integration.citizen.base-url}",
+	url = "${integration.party.base-url}",
 	configuration = PartyIntegrationConfiguration.class)
 @CircuitBreaker(name = INTEGRATION_NAME)
 public interface PartyClient {
