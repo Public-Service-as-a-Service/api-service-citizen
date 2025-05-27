@@ -13,39 +13,39 @@ import org.junit.jupiter.api.Test;
 
 class ModelPostPersonTest {
 
-    @Test
-    void testBean() {
-        assertThat(ModelPostPerson.class, allOf(
-                hasValidBeanConstructor(),
-                hasValidGettersAndSetters(),
-                hasValidBeanHashCode(),
-                hasValidBeanEquals(),
-                hasValidBeanToString()));
-    }
+	@Test
+	void testBean() {
+		assertThat(ModelPostPerson.class, allOf(
+			hasValidBeanConstructor(),
+			hasValidGettersAndSetters(),
+			hasValidBeanHashCode(),
+			hasValidBeanEquals(),
+			hasValidBeanToString()));
+	}
 
-    @Test
-    void testBuilderMethods() {
-        final var personalNumber = "198001011234";
+	@Test
+	void testBuilderMethods() {
+		final var personalNumber = "198001011234";
 
-        final var modelPostPerson = new ModelPostPerson()
-                .withPersonalNumber(personalNumber);
+		final var modelPostPerson = new ModelPostPerson()
+			.withPersonalNumber(personalNumber);
 
-        assertThat(modelPostPerson).isNotNull().hasNoNullFieldsOrProperties();
-        assertThat(modelPostPerson.getPersonalNumber()).isEqualTo(personalNumber);
-    }
+		assertThat(modelPostPerson).isNotNull().hasNoNullFieldsOrProperties();
+		assertThat(modelPostPerson.getPersonalNumber()).isEqualTo(personalNumber);
+	}
 
-    @Test
-    void testConstructorWithParameter() {
-        final var personalNumber = "198001011234";
+	@Test
+	void testConstructorWithParameter() {
+		final var personalNumber = "198001011234";
 
-        final var modelPostPerson = new ModelPostPerson(personalNumber);
+		final var modelPostPerson = new ModelPostPerson(personalNumber);
 
-        assertThat(modelPostPerson).isNotNull().hasNoNullFieldsOrProperties();
-        assertThat(modelPostPerson.getPersonalNumber()).isEqualTo(personalNumber);
-    }
+		assertThat(modelPostPerson).isNotNull().hasNoNullFieldsOrProperties();
+		assertThat(modelPostPerson.getPersonalNumber()).isEqualTo(personalNumber);
+	}
 
-    @Test
-    void testNoDirtOnCreatedBean() {
-        assertThat(new ModelPostPerson()).hasAllNullFieldsOrProperties();
-    }
+	@Test
+	void testNoDirtOnCreatedBean() {
+		assertThat(new ModelPostPerson()).hasAllNullFieldsOrProperties();
+	}
 }

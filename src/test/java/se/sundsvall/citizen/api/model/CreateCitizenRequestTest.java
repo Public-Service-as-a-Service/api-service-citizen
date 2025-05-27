@@ -13,30 +13,30 @@ import org.junit.jupiter.api.Test;
 
 class CreateCitizenRequestTest {
 
-    @Test
-    void testBean() {
-        assertThat(CreateCitizenRequest.class, allOf(
-                hasValidBeanConstructor(),
-                hasValidGettersAndSetters(),
-                hasValidBeanHashCode(),
-                hasValidBeanEquals(),
-                hasValidBeanToString()));
-    }
+	@Test
+	void testBean() {
+		assertThat(CreateCitizenRequest.class, allOf(
+			hasValidBeanConstructor(),
+			hasValidGettersAndSetters(),
+			hasValidBeanHashCode(),
+			hasValidBeanEquals(),
+			hasValidBeanToString()));
+	}
 
-    @Test
-    void testBuilderMethods() {
-        final var personalNumber = "198001011234";
+	@Test
+	void testBuilderMethods() {
+		final var personalNumber = "198001011234";
 
-        final var createCitizenRequest = CreateCitizenRequest.create()
-                .withPersonalNumber(personalNumber);
+		final var createCitizenRequest = CreateCitizenRequest.create()
+			.withPersonalNumber(personalNumber);
 
-        assertThat(createCitizenRequest).isNotNull().hasNoNullFieldsOrProperties();
-        assertThat(createCitizenRequest.getPersonalNumber()).isEqualTo(personalNumber);
-    }
+		assertThat(createCitizenRequest).isNotNull().hasNoNullFieldsOrProperties();
+		assertThat(createCitizenRequest.getPersonalNumber()).isEqualTo(personalNumber);
+	}
 
-    @Test
-    void testNoDirtOnCreatedBean() {
-        assertThat(CreateCitizenRequest.create()).hasAllNullFieldsOrProperties();
-        assertThat(new CreateCitizenRequest()).hasAllNullFieldsOrProperties();
-    }
+	@Test
+	void testNoDirtOnCreatedBean() {
+		assertThat(CreateCitizenRequest.create()).hasAllNullFieldsOrProperties();
+		assertThat(new CreateCitizenRequest()).hasAllNullFieldsOrProperties();
+	}
 }
