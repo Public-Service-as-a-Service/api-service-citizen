@@ -17,7 +17,7 @@ public class PartyIntegration {
 		try {
 			return client.getPartyId(personNumber, municipalityId, type);
 		} catch (final Exception e) {
-			LOG.info("Unable to get this", e);
+			LOG.info("Unable to get party id", e);
 			return null;
 		}
 	}
