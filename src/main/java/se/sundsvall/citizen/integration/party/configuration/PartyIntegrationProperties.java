@@ -12,9 +12,9 @@ import se.sundsvall.citizen.integration.Oauth2;
 @Primary
 @ConfigurationProperties(prefix = "integration.party")
 public record PartyIntegrationProperties(
-	@NotBlank String baseUrl,                             // ← maps integration.party.base-url
+	@NotBlank String baseUrl,
 	@DefaultValue("PT10S") Duration connectTimeout,
 	@DefaultValue("PT30S") Duration readTimeout,
-	@Valid @NotNull Oauth2 oauth2                         // ← maps integration.party.oauth2.*
+	@Valid @NotNull Oauth2 oauth2
 ) {
 }
