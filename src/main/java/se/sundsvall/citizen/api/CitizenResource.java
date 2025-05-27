@@ -1,5 +1,10 @@
 package se.sundsvall.citizen.api;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
+import static org.springframework.http.ResponseEntity.noContent;
+import static org.springframework.http.ResponseEntity.ok;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -7,6 +12,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.UUID;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -19,14 +27,6 @@ import se.sundsvall.citizen.api.model.ModelPostPerson;
 import se.sundsvall.citizen.api.model.PersonGuidBatch;
 import se.sundsvall.citizen.service.CitizenService;
 import se.sundsvall.dept44.common.validators.annotation.ValidUuid;
-
-import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.UUID;
-
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
-import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @Validated
@@ -97,7 +97,8 @@ public class CitizenResource {
 	public ResponseEntity<String> getPersonIdByPersonalNumber(
 		@Parameter(description = "Personal identity number for specific citizen") @PathVariable final String personNumber, @RequestParam("municipalityId") final String municipalityId) {
 
-		return ok(citizenService.getPersonIdByPersonalNumber(personNumber, municipalityId));
+		var respnse = citizenService.getPersonIdByPersonalNumber(personNumber, municipalityId);
+		return respnse != null ? ok(respnse) : ResponseEntity.noContent().build();
 	}
 
 	@PostMapping(path = "/guid/batch", produces = APPLICATION_JSON_VALUE)

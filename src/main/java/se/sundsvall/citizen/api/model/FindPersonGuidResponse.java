@@ -2,12 +2,10 @@ package se.sundsvall.citizen.api.model;
 
 import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Objects;
 import java.util.UUID;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "FindPersonGuidResponse model")
 public class FindPersonGuidResponse {

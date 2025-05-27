@@ -1,9 +1,9 @@
 package se.sundsvall.citizen.integration.db.specification;
 
+import static java.util.Objects.nonNull;
+
 import org.springframework.data.jpa.domain.Specification;
 import se.sundsvall.citizen.integration.db.model.CitizenEntity;
-
-import static java.util.Objects.nonNull;
 
 public interface CitizenSpecification {
 

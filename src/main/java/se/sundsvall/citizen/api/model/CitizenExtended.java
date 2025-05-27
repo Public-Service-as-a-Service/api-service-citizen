@@ -2,13 +2,11 @@ package se.sundsvall.citizen.api.model;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-
-import io.swagger.v3.oas.annotations.media.Schema;
 
 @JsonInclude(NON_NULL)
 @Schema(description = "Citizen model")

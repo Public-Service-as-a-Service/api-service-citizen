@@ -2,11 +2,9 @@ package se.sundsvall.citizen.api.model;
 
 import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.Objects;
 
 @Schema(description = "FindCitizenResponse model")
 public class FindCitizenResponse {

@@ -1,9 +1,9 @@
 package se.sundsvall.citizen.service.mapper;
 
+import java.util.Optional;
+import java.util.UUID;
 import se.sundsvall.citizen.api.model.CitizenExtended;
 import se.sundsvall.citizen.integration.db.model.CitizenEntity;
-import java.util.UUID;
-import java.util.Optional;
 
 public class CitizenMapper {
 

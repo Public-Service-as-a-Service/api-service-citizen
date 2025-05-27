@@ -1,7 +1,6 @@
 package se.sundsvall.citizen.api.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.Objects;
 
 @Schema(description = "Model for posting a new person")

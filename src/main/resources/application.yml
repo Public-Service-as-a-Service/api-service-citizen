@@ -12,7 +12,7 @@ spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
   flyway:
-    enabled: true
+    enabled: false
     baseline-on-migrate: true
   jpa:
     properties:

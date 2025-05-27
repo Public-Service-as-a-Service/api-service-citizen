@@ -3,8 +3,8 @@ package se.sundsvall.citizen.integration.party.configuration;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
-import java.util.List;
 import feign.Request;
+import java.util.List;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.openfeign.FeignBuilderCustomizer;
 import org.springframework.context.annotation.Bean;

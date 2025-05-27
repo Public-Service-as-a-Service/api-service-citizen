@@ -1,16 +1,15 @@
 package se.sundsvall.citizen.api.model;
 
+import static java.lang.Integer.parseInt;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
-import se.sundsvall.dept44.common.validators.annotation.ValidUuid;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-
-import static java.lang.Integer.parseInt;
+import se.sundsvall.dept44.common.validators.annotation.ValidUuid;
 
 @Schema(description = "FindCitizenBatchRequest model")
 public class FindCitizenBatchRequest {

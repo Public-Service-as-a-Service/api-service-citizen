@@ -1,11 +1,10 @@
 package se.sundsvall.citizen.api.model;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.Objects;
-
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 @JsonInclude(NON_NULL)
 @Schema(description = "Citizen address model")

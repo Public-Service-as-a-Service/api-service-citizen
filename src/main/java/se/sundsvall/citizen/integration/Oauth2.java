@@ -7,4 +7,6 @@ public record Oauth2(
 
 	@NotBlank String clientId,
 
-	@NotBlank String clientSecret) {}
+	@NotBlank String clientSecret) {
+
+}

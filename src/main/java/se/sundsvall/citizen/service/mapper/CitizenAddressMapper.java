@@ -1,13 +1,12 @@
 package se.sundsvall.citizen.service.mapper;
 
-import se.sundsvall.citizen.api.model.CitizenAddress;
-import se.sundsvall.citizen.api.model.CitizenWithChangedAddress;
-import se.sundsvall.citizen.integration.db.model.CitizenAddressEntity;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import se.sundsvall.citizen.api.model.CitizenAddress;
+import se.sundsvall.citizen.api.model.CitizenWithChangedAddress;
+import se.sundsvall.citizen.integration.db.model.CitizenAddressEntity;
 
 public class CitizenAddressMapper {
 

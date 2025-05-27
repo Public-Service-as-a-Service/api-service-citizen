@@ -1,11 +1,10 @@
 package se.sundsvall.citizen.integration.db.specification;
 
-import org.springframework.data.jpa.domain.Specification;
-import se.sundsvall.citizen.integration.db.model.CitizenAddressEntity;
+import static java.util.Objects.nonNull;
 
 import java.time.OffsetDateTime;
-
-import static java.util.Objects.nonNull;
+import org.springframework.data.jpa.domain.Specification;
+import se.sundsvall.citizen.integration.db.model.CitizenAddressEntity;
 
 public interface CitizenAddressSpecification {
 

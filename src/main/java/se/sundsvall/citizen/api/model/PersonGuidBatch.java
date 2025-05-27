@@ -1,8 +1,8 @@
 package se.sundsvall.citizen.api.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.UUID;
 import java.util.Objects;
+import java.util.UUID;
 
 @Schema(description = "Person GUID batch response model")
 public class PersonGuidBatch {

@@ -1,22 +1,19 @@
 package se.sundsvall.citizen.service.mapper;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.time.OffsetDateTime;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import se.sundsvall.citizen.api.model.CitizenAddress;
-import se.sundsvall.citizen.api.model.CitizenExtended;
 import se.sundsvall.citizen.integration.db.model.CitizenAddressEntity;
 import se.sundsvall.citizen.integration.db.model.CitizenEntity;
-
-import java.time.OffsetDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 
 /**
  * Tests for CitizenMapper.

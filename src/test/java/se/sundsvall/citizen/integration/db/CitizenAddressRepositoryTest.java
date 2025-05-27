@@ -1,5 +1,10 @@
 package se.sundsvall.citizen.integration.db;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
+
+import java.time.OffsetDateTime;
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -9,12 +14,6 @@ import org.springframework.test.context.jdbc.Sql;
 import se.sundsvall.citizen.integration.db.model.CitizenAddressEntity;
 import se.sundsvall.citizen.integration.db.model.CitizenEntity;
 import se.sundsvall.citizen.integration.db.specification.CitizenAddressSpecification;
-
-import java.time.OffsetDateTime;
-import java.util.UUID;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
 /**
  * Citizen address repository tests.

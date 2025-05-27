@@ -1,7 +1,18 @@
 package se.sundsvall.citizen.service;
 
+import static java.lang.String.format;
+import static org.zalando.problem.Status.BAD_REQUEST;
+import static org.zalando.problem.Status.CONFLICT;
+import static org.zalando.problem.Status.NOT_FOUND;
+import static se.sundsvall.citizen.service.ServiceConstants.ERROR_CITIZEN_NOT_FOUND;
+import static se.sundsvall.citizen.service.ServiceConstants.ERROR_PERSONAL_NUMBER_NOT_FOUND;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.zalando.problem.Problem;
 import se.sundsvall.citizen.api.model.CitizenExtended;
@@ -15,18 +26,6 @@ import se.sundsvall.citizen.integration.db.specification.CitizenAddressSpecifica
 import se.sundsvall.citizen.integration.party.PartyIntegration;
 import se.sundsvall.citizen.service.mapper.CitizenAddressMapper;
 import se.sundsvall.citizen.service.mapper.CitizenMapper;
-
-import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
-
-import static java.lang.String.format;
-import static org.zalando.problem.Status.BAD_REQUEST;
-import static org.zalando.problem.Status.CONFLICT;
-import static org.zalando.problem.Status.NOT_FOUND;
-import static se.sundsvall.citizen.service.ServiceConstants.ERROR_CITIZEN_NOT_FOUND;
-import static se.sundsvall.citizen.service.ServiceConstants.ERROR_PERSONAL_NUMBER_NOT_FOUND;
 
 @Service
 @Transactional
