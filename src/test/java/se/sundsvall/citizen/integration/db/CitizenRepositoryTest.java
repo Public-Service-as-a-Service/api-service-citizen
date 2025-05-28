@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
 import java.time.OffsetDateTime;
-import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -18,7 +17,7 @@ import se.sundsvall.citizen.integration.db.model.CitizenEntity;
 /**
  * Citizen repository tests.
  *
- * @see src/test/resources/db/script/CitizenRepositoryTest.sql for data setup.
+ * @see /src/test/resources/db/script/CitizenRepositoryTest.sql for data setup.
  */
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = NONE)
@@ -99,7 +98,6 @@ class CitizenRepositoryTest {
 	@Test
 	void save() {
 		final var citizenEntity = CitizenEntity.create()
-			.withPersonId(UUID.randomUUID().toString())
 			.withPersonalNumber("20000101-1234")
 			.withGivenname("Test")
 			.withLastname("Testsson")

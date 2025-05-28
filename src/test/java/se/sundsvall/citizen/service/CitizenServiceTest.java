@@ -221,9 +221,9 @@ class CitizenServiceTest {
 	void getPersonIdByPersonalNumber() {
 		// Arrange
 		final var personalNumber = "198001011234";
-		final var personId = UUID.randomUUID();
+		final var personId = UUID.randomUUID().toString();
 		final var municipalityId = "2281";
-		final var citizenEntity = CitizenEntity.create().withPersonId(personId.toString());
+		final var citizenEntity = CitizenEntity.create().withPersonId(personId);
 
 		when(citizenRepositoryMock.findByPersonalNumber(personalNumber)).thenReturn(Optional.of(citizenEntity));
 
@@ -239,7 +239,7 @@ class CitizenServiceTest {
 	void getPersonIdByPersonalNumber_NotFound() {
 		// Arrange
 		final var personalNumber = "198001011234";
-		final var municipalityId = "2281";
+		final var municipalityId = "2181";
 		when(citizenRepositoryMock.findByPersonalNumber(personalNumber)).thenReturn(Optional.empty());
 
 		// Act & Assert

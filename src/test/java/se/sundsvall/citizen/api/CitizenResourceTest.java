@@ -14,8 +14,8 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import se.sundsvall.citizen.Application;
 import se.sundsvall.citizen.api.model.CitizenAddress;
@@ -32,7 +32,7 @@ class CitizenResourceTest {
 	private static final String PATH = "/api/v2/citizen";
 	private static final OffsetDateTime CURRENT_TIME = OffsetDateTime.parse("2025-01-29T09:32:35Z");
 
-	@MockBean
+	@MockitoBean
 	private CitizenService citizenServiceMock;
 
 	@Autowired
@@ -148,19 +148,22 @@ class CitizenResourceTest {
 	@Test
 	void getPersonIdByPersonalNumber() {
 		// Arrange
-		final var personId = UUID.randomUUID();
+		final var personId = UUID.randomUUID().toString();
 		final var personalNumber = "198001011234";
-		final var municipalityId = "2281";
+		final var municipalityId = "1440";
 		when(citizenServiceMock.getPersonIdByPersonalNumber(personalNumber, municipalityId))
 			.thenReturn(String.valueOf(personId));
 
 		// Act
 		final var response = webTestClient.get()
-			.uri(PATH + "/{personalNumber}/guid", personalNumber)
+			.uri(uriBuilder -> uriBuilder
+				.path(PATH + "/{personalNumber}/guid")
+				.queryParam("municipalityId", municipalityId)
+				.build(personalNumber))
 			.exchange()
 			.expectStatus().isOk()
 			.expectHeader().contentType(APPLICATION_JSON)
-			.expectBody(UUID.class)
+			.expectBody(String.class)
 			.returnResult()
 			.getResponseBody();
 
