@@ -34,6 +34,7 @@ import se.sundsvall.citizen.integration.db.CitizenRepository;
 import se.sundsvall.citizen.integration.db.model.CitizenAddressEntity;
 import se.sundsvall.citizen.integration.db.model.CitizenEntity;
 import se.sundsvall.citizen.integration.db.specification.CitizenAddressSpecification;
+import se.sundsvall.citizen.integration.party.PartyIntegration;
 import se.sundsvall.citizen.service.mapper.CitizenAddressMapper;
 import se.sundsvall.citizen.service.mapper.CitizenMapper;
 
@@ -51,6 +52,9 @@ class CitizenServiceTest {
 
 	@InjectMocks
 	private CitizenService citizenService;
+
+	@Mock
+	private PartyIntegration partyIntegrationMock;
 
 	@Test
 	void getCitizenById() {
@@ -222,7 +226,7 @@ class CitizenServiceTest {
 		// Arrange
 		final var personalNumber = "198001011234";
 		final var personId = UUID.randomUUID().toString();
-		final var municipalityId = "2281";
+		final var municipalityId = "1440";
 		final var citizenEntity = CitizenEntity.create().withPersonId(personId);
 
 		when(citizenRepositoryMock.findByPersonalNumber(personalNumber)).thenReturn(Optional.of(citizenEntity));
@@ -233,6 +237,23 @@ class CitizenServiceTest {
 		// Assert
 		assertThat(result).isEqualTo(personId);
 		verify(citizenRepositoryMock).findByPersonalNumber(personalNumber);
+	}
+
+	@Test
+	void getPersonIdByPersonalNumberInSundsvall() {
+		// Arrange
+		final var personalNumber = "198001011234";
+		final var personId = UUID.randomUUID().toString();
+		final var municipalityId = "2281";
+		final var type = "PRIVATE";
+
+		when(partyIntegrationMock.getPartyId(personalNumber, municipalityId, type)).thenReturn(personId);
+		// Act
+		final var result = citizenService.getPersonIdByPersonalNumber(personalNumber, municipalityId);
+
+		// Assert
+		assertThat(result).isEqualTo(personId);
+		verify(partyIntegrationMock).getPartyId(personalNumber, municipalityId, type);
 	}
 
 	@Test

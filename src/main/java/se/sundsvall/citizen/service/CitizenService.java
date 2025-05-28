@@ -82,7 +82,7 @@ public class CitizenService {
 	}
 
 	public String getPersonIdByPersonalNumber(final String personNumber, final String municipalityId) {
-		if (!Objects.equals(municipalityId, "1237")) {
+		if (!Objects.equals(municipalityId, "2281")) {
 			final var citizenEntity = citizenRepository.findByPersonalNumber(personNumber)
 				.orElseThrow(() -> Problem.valueOf(NOT_FOUND,
 					format(ERROR_PERSONAL_NUMBER_NOT_FOUND, personNumber)));
