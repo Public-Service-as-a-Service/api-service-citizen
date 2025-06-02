@@ -109,4 +109,22 @@ class CitizenAddressEntityTest {
 		assertThat(CitizenAddressEntity.create()).hasAllNullFieldsOrProperties();
 		assertThat(new CitizenAddressEntity()).hasAllNullFieldsOrProperties();
 	}
+
+	@Test
+	void testEqualsAndHashCode() {
+		final var id = UUID.randomUUID().toString();
+		CitizenAddressEntity entityOne = CitizenAddressEntity.create().withId(id);
+		CitizenAddressEntity entityTwo = CitizenAddressEntity.create().withId(id);
+		CitizenAddressEntity entityThree = CitizenAddressEntity.create().withId(UUID.randomUUID().toString());
+
+		assertThat(entityOne).isEqualTo(entityTwo);
+		assertThat(entityOne).isNotEqualTo(entityThree);
+		assertThat(entityOne.hashCode()).isEqualTo(entityTwo.hashCode());
+	}
+
+	@Test
+	void testToString() {
+		CitizenAddressEntity entity = CitizenAddressEntity.create().withCity("city");
+		assertThat(entity.toString()).contains("city");
+	}
 }
