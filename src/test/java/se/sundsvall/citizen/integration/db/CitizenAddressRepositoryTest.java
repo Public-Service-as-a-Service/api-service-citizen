@@ -31,7 +31,7 @@ class CitizenAddressRepositoryTest {
 
 	private static final String ENTITY_1_ID = "c305f904-c9bf-4144-8656-a797acc90b74";
 	private static final String CITIZEN_1_ID = "fb47e26c-1c27-11ee-be56-0242ac120002";
-	private static final OffsetDateTime BASE_TIME = OffsetDateTime.parse("2025-03-10T17:28:54Z");
+	private static final OffsetDateTime BASE_TIME = OffsetDateTime.parse("2025-01-30T10:28:54Z");
 
 	@Autowired
 	private CitizenAddressRepository citizenAddressRepository;
@@ -65,11 +65,35 @@ class CitizenAddressRepositoryTest {
 		final var addresses = citizenAddressRepository.findAll(
 			CitizenAddressSpecification.hasChangedAddressSince(fromDate));
 
-//		assertThat(addresses)
-//			.isNotNull()
-//			.hasSize(0)
-//			.extracting(CitizenAddressEntity::getId)
-//			.containsExactly(ENTITY_1_ID);
+		assertThat(addresses)
+			.isNotNull()
+			.hasSize(1)
+			.extracting(CitizenAddressEntity::getId)
+			.containsExactly(ENTITY_1_ID);
+	}
+
+	@Test
+	void findAllWithPostalCode() {
+		final var addresses = citizenAddressRepository.findAll(
+			CitizenAddressSpecification.withPostalCode("12345"));
+
+		assertThat(addresses)
+			.isNotNull()
+			.hasSize(1)
+			.extracting(CitizenAddressEntity::getPostalCode)
+			.containsExactly("12345");
+	}
+
+	@Test
+	void findAllWithAddressType() {
+		final var addresses = citizenAddressRepository.findAll(
+			CitizenAddressSpecification.withAddressType("addressType"));
+
+		assertThat(addresses)
+			.isNotNull()
+			.hasSize(1)
+			.extracting(CitizenAddressEntity::getAddressType)
+			.containsExactly("addressType");
 	}
 
 	@Test
