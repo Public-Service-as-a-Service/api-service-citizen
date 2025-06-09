@@ -15,6 +15,5 @@ public record PartyIntegrationProperties(
 	@NotBlank String baseUrl,
 	@DefaultValue("PT10S") Duration connectTimeout,
 	@DefaultValue("PT30S") Duration readTimeout,
-	@Valid @NotNull Oauth2 oauth2
-) {
+	@Valid @NotNull Oauth2 oauth2) {
 }
