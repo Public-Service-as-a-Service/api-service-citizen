@@ -2,7 +2,6 @@ package se.sundsvall.citizen.api;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
-import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -97,8 +96,8 @@ public class CitizenResource {
 	public ResponseEntity<String> getPersonIdByPersonalNumber(
 		@Parameter(description = "Personal identity number for specific citizen") @PathVariable final String personNumber, @RequestParam("municipalityId") final String municipalityId) {
 
-		var respnse = citizenService.getPersonIdByPersonalNumber(personNumber, municipalityId);
-		return respnse != null ? ok(respnse) : ResponseEntity.noContent().build();
+		var response = citizenService.getPersonIdByPersonalNumber(personNumber, municipalityId);
+		return response != null ? ok(response) : ResponseEntity.noContent().build();
 	}
 
 	@PostMapping(path = "/guid/batch", produces = APPLICATION_JSON_VALUE)

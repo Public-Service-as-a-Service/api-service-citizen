@@ -131,7 +131,7 @@ public class CitizenService {
 		}
 
 		final var citizenEntity = CitizenEntity.create()
-			.withPersonId(UUID.randomUUID().toString())
+
 			.withPersonalNumber(person.getPersonalNumber());
 
 		var savedEntity = citizenRepository.save(citizenEntity);
