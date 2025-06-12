@@ -6,6 +6,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import se.sundsvall.citizen.integration.db.model.CitizenAddressEntity;
 
 @CircuitBreaker(name = "CitizenAddressRepository")
-public interface CitizenAddressRepository extends JpaRepository<CitizenAddressEntity, String>,
-        JpaSpecificationExecutor<CitizenAddressEntity> {
+public interface CitizenAddressRepository extends JpaRepository<CitizenAddressEntity, String>, JpaSpecificationExecutor<CitizenAddressEntity> {
 }
