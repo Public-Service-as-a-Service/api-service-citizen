@@ -1,9 +1,6 @@
 package se.sundsvall.citizen.integration.db.model;
 
-import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanConstructor;
-import static com.google.code.beanmatchers.BeanMatchers.hasValidBeanHashCode;
-import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSetters;
-import static com.google.code.beanmatchers.BeanMatchers.registerValueGenerator;
+import static com.google.code.beanmatchers.BeanMatchers.*;
 import static java.time.OffsetDateTime.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -27,7 +24,8 @@ class CitizenAddressEntityTest {
 		assertThat(CitizenAddressEntity.class, allOf(
 			hasValidBeanConstructor(),
 			hasValidGettersAndSetters(),
-			hasValidBeanHashCode()));
+			hasValidBeanHashCode(),
+			hasValidBeanEquals()));
 	}
 
 	@Test
@@ -108,18 +106,6 @@ class CitizenAddressEntityTest {
 	void testNoDirtOnCreatedBean() {
 		assertThat(CitizenAddressEntity.create()).hasAllNullFieldsOrProperties();
 		assertThat(new CitizenAddressEntity()).hasAllNullFieldsOrProperties();
-	}
-
-	@Test
-	void testEqualsAndHashCode() {
-		final var id = UUID.randomUUID().toString();
-		CitizenAddressEntity entityOne = CitizenAddressEntity.create().withId(id);
-		CitizenAddressEntity entityTwo = CitizenAddressEntity.create().withId(id);
-		CitizenAddressEntity entityThree = CitizenAddressEntity.create().withId(UUID.randomUUID().toString());
-
-		assertThat(entityOne).isEqualTo(entityTwo);
-		assertThat(entityOne).isNotEqualTo(entityThree);
-		assertThat(entityOne.hashCode()).isEqualTo(entityTwo.hashCode());
 	}
 
 	@Test

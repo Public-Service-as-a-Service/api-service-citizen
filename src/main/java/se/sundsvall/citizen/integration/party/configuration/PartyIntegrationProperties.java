@@ -6,10 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import java.time.Duration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.DefaultValue;
-import org.springframework.context.annotation.Primary;
 import se.sundsvall.citizen.integration.Oauth2;
 
-@Primary
 @ConfigurationProperties(prefix = "integration.party")
 public record PartyIntegrationProperties(
 	@NotBlank String baseUrl,

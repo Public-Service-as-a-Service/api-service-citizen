@@ -247,7 +247,7 @@ class CitizenServiceTest {
 		final var municipalityId = "2281";
 		final var type = "PRIVATE";
 
-		when(partyIntegrationMock.getPartyId(personalNumber, municipalityId, type)).thenReturn(personId);
+		when(partyIntegrationMock.getPartyId(personalNumber, municipalityId, type)).thenReturn(Optional.ofNullable(personId));
 		// Act
 		final var result = citizenService.getPersonIdByPersonalNumber(personalNumber, municipalityId);
 
@@ -269,7 +269,7 @@ class CitizenServiceTest {
 
 		assertThat(exception.getStatus()).isEqualTo(NOT_FOUND);
 		assertThat(exception.getMessage())
-			.contains(String.format("No citizen found with personal number: %s", personalNumber));
+			.contains("No citizen found with that personal number");
 	}
 
 	@Test

@@ -1,5 +1,6 @@
 package se.sundsvall.citizen.integration.party;
 
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -13,12 +14,12 @@ public class PartyIntegration {
 		this.client = client;
 	}
 
-	public String getPartyId(final String personNumber, String municipalityId, String type) {
+	public Optional<String> getPartyId(final String personNumber, String municipalityId, String type) {
 		try {
 			return client.getPartyId(personNumber, municipalityId, type);
 		} catch (final Exception e) {
 			LOG.info("Unable to get party id", e);
-			return null;
+			return Optional.empty();
 		}
 	}
 }

@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 import feign.FeignException;
+import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,10 +30,10 @@ public class PartyIntegrationTest {
 		final var type = "PRIVATE";
 		final var partyId = UUID.randomUUID().toString();
 
-		when(mockPartyClient.getPartyId(personalNumber, municipalityId, type)).thenReturn(partyId);
+		when(mockPartyClient.getPartyId(personalNumber, municipalityId, type)).thenReturn(Optional.ofNullable(partyId));
 		// act
 		final var result = partyIntegration.getPartyId(personalNumber, municipalityId, type);
-		assertThat(result).isEqualTo(partyId);
+		assertThat(result).isEqualTo(Optional.ofNullable(partyId));
 		verify(mockPartyClient).getPartyId(personalNumber, municipalityId, type);
 		verifyNoMoreInteractions(mockPartyClient);
 	}
@@ -47,7 +48,7 @@ public class PartyIntegrationTest {
 			.when(mockPartyClient).getPartyId(personalNumber, municipalityId, type);
 
 		final var result = partyIntegration.getPartyId(personalNumber, municipalityId, type);
-		assertThat(result).isNull();
+		assertThat(result).isEqualTo(Optional.empty());
 		verify(mockPartyClient).getPartyId(personalNumber, municipalityId, type);
 		verifyNoMoreInteractions(mockPartyClient);
 	}
