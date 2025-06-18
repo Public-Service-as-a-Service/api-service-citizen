@@ -1,106 +1,119 @@
 openapi: 3.0.1
 info:
-  title: Citizen API
-  version: v2
+  title: api-citizen
+  contact: {}
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+  version: "1.0"
+servers:
+  - url: http://localhost:8081
+    description: Generated server url
+tags:
+  - name: Citizen
+    description: Show information about Citizens
 paths:
-  /api/v2/citizen/api-docs:
-    get:
+  /api/v2/citizen/guid:
+    post:
       tags:
         - Citizen
-      summary: OpenAPI specification
+      summary: Create person
+      operationId: createPerson
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ModelPostPerson"
+        required: true
       responses:
-        '200':
+        "200":
           description: Success
           content:
-            text/plain:
-              schema:
-                type: string
             application/json:
               schema:
                 type: string
-            text/json:
-              schema:
-                type: string
-      x-auth-type: None
-  '/api/v2/citizen/{personId}':
-    get:
-      tags:
-        - Citizen
-      summary: Show information about specific citizen
-      parameters:
-        - name: personId
-          in: path
-          description: ID for specific citizen
-          required: true
-          schema:
-            type: string
-            format: uuid
-        - name: ShowClassified
-          in: query
-          description: 'If true, include search for classified persons'
-          schema:
-            type: boolean
-            default: false
-      responses:
-        '200':
-          description: Success
+                format: uuid
+        "409":
+          description: Conflict
           content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/CitizenExtended'
             application/json:
               schema:
-                $ref: '#/components/schemas/CitizenExtended'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/CitizenExtended'
-        '204':
-          description: No Content
-        '400':
+                type: string
+                format: uuid
+        "400":
           description: Bad Request
           content:
-            text/plain:
+            application/problem+json:
               schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
+                oneOf:
+                  - $ref: "#/components/schemas/Problem"
+                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "500":
           description: Server Error
           content:
-            text/plain:
+            application/problem+json:
               schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '503':
+                $ref: "#/components/schemas/Problem"
+        "503":
           description: Server Error
           content:
-            text/plain:
+            application/problem+json:
               schema:
-                $ref: '#/components/schemas/ProblemDetails'
+                $ref: "#/components/schemas/Problem"
+  /api/v2/citizen/guid/batch:
+    post:
+      tags:
+        - Citizen
+      summary: Get an array of personIds from Personal identity numbers
+      operationId: getPersonIdsBatch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Problem"
+                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "500":
+          description: Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "503":
+          description: Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "200":
+          description: Success
+          content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
+                type: array
+                items:
+                  $ref: "#/components/schemas/PersonGuidBatch"
   /api/v2/citizen/batch:
     post:
       tags:
         - Citizen
       summary: Show information about list of citizens
+      operationId: getCitizensBatch
       parameters:
-        - name: ShowClassified
+        - name: showClassified
           in: query
-          description: 'If true, include search for classified persons'
+          description: "If true, include search for classified persons"
+          required: false
           schema:
             type: boolean
             default: false
@@ -112,211 +125,42 @@ paths:
               items:
                 type: string
                 format: uuid
-          text/json:
-            schema:
-              type: array
-              items:
-                type: string
-                format: uuid
-          application/*+json:
-            schema:
-              type: array
-              items:
-                type: string
-                format: uuid
+        required: true
       responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CitizenExtended'
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CitizenExtended'
-            text/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CitizenExtended'
-        '400':
+        "400":
           description: Bad Request
           content:
-            text/plain:
+            application/problem+json:
               schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
+                oneOf:
+                  - $ref: "#/components/schemas/Problem"
+                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "500":
           description: Server Error
           content:
-            text/plain:
+            application/problem+json:
               schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '503':
+                $ref: "#/components/schemas/Problem"
+        "503":
           description: Server Error
           content:
-            text/plain:
+            application/problem+json:
               schema:
-                $ref: '#/components/schemas/ProblemDetails'
+                $ref: "#/components/schemas/Problem"
+        "200":
+          description: Success
+          content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-  /api/v2/citizen/changedaddress:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CitizenExtended"
+  /api/v2/citizen/{personNumber}/guid:
     get:
       tags:
         - Citizen
-      summary: Show citizens that have moved since the given date
-      parameters:
-        - name: changedDateFrom
-          in: query
-          description: From-date for move.
-          schema:
-            type: string
-            format: date-time
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CitizenWithChangedAddress'
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CitizenWithChangedAddress'
-            text/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CitizenWithChangedAddress'
-        '204':
-          description: No Content
-        '400':
-          description: Bad Request
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Server Error
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '503':
-          description: Server Error
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-  '/api/v2/citizen/{personId}/personnumber':
-    get:
-      tags:
-        - Citizen
-      summary: Get Personal identity number from personId
-      parameters:
-        - name: personId
-          in: path
-          description: 'personID, Guid, for specific citizen'
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                type: string
-            application/json:
-              schema:
-                type: string
-            text/json:
-              schema:
-                type: string
-        '204':
-          description: No Content
-        '400':
-          description: Bad Request
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Server Error
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '503':
-          description: Server Error
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-  '/api/v2/citizen/{personNumber}/guid':
-    get:
-      tags:
-        - Citizen
-      summary: Get the personId from Personal the identity number
+      summary: Get the personId from Personal identity number
+      operationId: getPersonIdByPersonalNumber
       parameters:
         - name: personNumber
           in: path
@@ -324,449 +168,604 @@ paths:
           required: true
           schema:
             type: string
+        - name: municipalityId
+          in: query
+          required: true
+          schema:
+            type: string
       responses:
-        '200':
+        "200":
           description: Success
           content:
-            text/plain:
-              schema:
-                type: string
-                format: uuid
             application/json:
               schema:
                 type: string
-                format: uuid
-            text/json:
-              schema:
-                type: string
-                format: uuid
-        '204':
+        "204":
           description: No Content
-        '400':
-          description: Bad Request
           content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
             application/json:
               schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '404':
+                type: string
+        "404":
           description: Not Found
           content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
             application/json:
               schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Server Error
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '503':
-          description: Server Error
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-  /api/v2/citizen/guid/batch:
-    post:
-      tags:
-        - Citizen
-      summary: Get an array of personIds from Personal identity numbers
-      requestBody:
-        description: A string array of Personal identity number for specific citizen
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
                 type: string
-          text/json:
-            schema:
-              type: array
-              items:
-                type: string
-          application/*+json:
-            schema:
-              type: array
-              items:
-                type: string
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/PersonGuidBatch'
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/PersonGuidBatch'
-            text/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/PersonGuidBatch'
-        '400':
+        "400":
           description: Bad Request
           content:
-            text/plain:
+            application/problem+json:
               schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
+                oneOf:
+                  - $ref: "#/components/schemas/Problem"
+                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "500":
           description: Server Error
           content:
-            text/plain:
+            application/problem+json:
               schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '503':
+                $ref: "#/components/schemas/Problem"
+        "503":
           description: Server Error
           content:
-            text/plain:
+            application/problem+json:
               schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-  /api/v2/citizen/guid:
-    post:
+                $ref: "#/components/schemas/Problem"
+  /api/v2/citizen/{personId}:
+    get:
       tags:
         - Citizen
-      summary: Create person
-      requestBody:
-        description: Personal identity number for specific citizen
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ModelPostPerson'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/ModelPostPerson'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/ModelPostPerson'
+      summary: Show information about specific citizen
+      operationId: getCitizenById
+      parameters:
+        - name: personId
+          in: path
+          description: ID for specific citizen
+          required: true
+          schema:
+            type: string
+        - name: showClassified
+          in: query
+          description: "If true, include search for classified persons"
+          required: false
+          schema:
+            type: boolean
+            default: false
       responses:
-        '200':
+        "200":
           description: Success
           content:
-            text/plain:
-              schema:
-                type: string
-                format: uuid
             application/json:
               schema:
-                type: string
-                format: uuid
-            text/json:
+                $ref: "#/components/schemas/CitizenExtended"
+        "204":
+          description: No Content
+          content:
+            application/json:
               schema:
-                type: string
-                format: uuid
-        '400':
+                $ref: "#/components/schemas/CitizenExtended"
+        "400":
           description: Bad Request
           content:
-            text/plain:
+            application/problem+json:
               schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '404':
-          description: Not Found
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '409':
-          description: Conflict
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
+                oneOf:
+                  - $ref: "#/components/schemas/Problem"
+                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "500":
           description: Server Error
           content:
-            text/plain:
+            application/problem+json:
               schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '503':
+                $ref: "#/components/schemas/Problem"
+        "503":
           description: Server Error
           content:
-            text/plain:
+            application/problem+json:
               schema:
-                $ref: '#/components/schemas/ProblemDetails'
+                $ref: "#/components/schemas/Problem"
+  /api/v2/citizen/{personId}/personnumber:
+    get:
+      tags:
+        - Citizen
+      summary: Get Personal identity number from personId
+      operationId: getPersonalNumberById
+      parameters:
+        - name: personId
+          in: path
+          description: "personID, Guid, for specific citizen"
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProblemDetails'
-            text/json:
+                type: string
+        "204":
+          description: No Content
+          content:
+            application/json:
               schema:
-                $ref: '#/components/schemas/ProblemDetails'
+                type: string
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Problem"
+                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "500":
+          description: Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "503":
+          description: Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+  /api/v2/citizen/changedaddress:
+    get:
+      tags:
+        - Citizen
+      summary: Show citizens that have moved since the given date
+      operationId: getCitizensWithChangedAddress
+      parameters:
+        - name: changedDateFrom
+          in: query
+          description: From-date for move
+          required: true
+          schema:
+            type: string
+            format: date-time
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CitizenWithChangedAddress"
+        "204":
+          description: No Content
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CitizenWithChangedAddress"
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Problem"
+                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "500":
+          description: Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "503":
+          description: Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+  /api-docs:
+    get:
+      tags:
+        - API
+      summary: OpenAPI
+      operationId: getApiDocs
+      responses:
+        "200":
+          description: OK
+          content:
+            application/yaml:
+              schema:
+                type: string
+      x-auth-type: None
+      x-throttling-tier: Unlimited
+      x-wso2-mutual-ssl: Optional
 components:
   schemas:
-    CitizenAddress:
-      type: object
-      properties:
-        status:
-          type: string
-          nullable: true
-        nrDate:
-          type: string
-          format: date-time
-          nullable: true
-        realEstateDescription:
-          type: string
-          nullable: true
-        co:
-          type: string
-          nullable: true
-        address:
-          type: string
-          nullable: true
-        addressArea:
-          type: string
-          nullable: true
-        addressNumber:
-          type: string
-          nullable: true
-        addressLetter:
-          type: string
-          nullable: true
-        appartmentNumber:
-          type: string
-          nullable: true
-        postalCode:
-          type: string
-          nullable: true
-        city:
-          type: string
-          nullable: true
-        county:
-          type: string
-          nullable: true
-        municipality:
-          type: string
-          nullable: true
-        country:
-          type: string
-          nullable: true
-        emigrated:
-          type: boolean
-          nullable: true
-        addressType:
-          type: string
-          nullable: true
-        xCoordLocal:
-          type: number
-          format: double
-          nullable: true
-        yCoordLocal:
-          type: number
-          format: double
-          nullable: true
-      additionalProperties: false
-    CitizenExtended:
-      type: object
-      properties:
-        personId:
-          type: string
-          format: uuid
-        givenname:
-          type: string
-          nullable: true
-        lastname:
-          type: string
-          nullable: true
-        gender:
-          type: string
-          nullable: true
-        civilStatus:
-          type: string
-          nullable: true
-        nrDate:
-          type: string
-          nullable: true
-        classified:
-          type: string
-          nullable: true
-        protectedNR:
-          type: string
-          nullable: true
-        addresses:
-          type: array
-          items:
-            $ref: '#/components/schemas/CitizenAddress'
-          nullable: true
-      additionalProperties: false
-    CitizenWithChangedAddress:
-      type: object
-      properties:
-        personId:
-          type: string
-          format: uuid
-        personNumber:
-          type: string
-          nullable: true
-        classified:
-          type: string
-          nullable: true
-        unRegCode:
-          type: string
-          nullable: true
-        unRegDate:
-          type: string
-          format: date-time
-          nullable: true
-        gender:
-          type: string
-          nullable: true
-        givenname:
-          type: string
-          nullable: true
-        lastname:
-          type: string
-          nullable: true
-        typeOfSchool:
-          type: string
-          nullable: true
-        custodianFor:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustodyChildrenPupil'
-          nullable: true
-        addresses:
-          type: array
-          items:
-            $ref: '#/components/schemas/CitizenAddress'
-          nullable: true
-      additionalProperties: false
-    CustodyChildrenPupil:
-      type: object
-      properties:
-        personnumber:
-          type: string
-          nullable: true
-        typeOfSchool:
-          type: string
-          nullable: true
-        unRegCode:
-          type: string
-          nullable: true
-        unRegDate:
-          type: string
-          format: date-time
-          nullable: true
-      additionalProperties: false
     ModelPostPerson:
       type: object
       properties:
         personalNumber:
           type: string
-          nullable: true
-      additionalProperties: false
+          description: Personal identity number for the person
+          example: "198001011234"
+      description: Model for posting a new person
+    Problem:
+      type: object
+      properties:
+        instance:
+          type: string
+          format: uri
+        type:
+          type: string
+          format: uri
+        parameters:
+          type: object
+          additionalProperties:
+            type: object
+        status:
+          $ref: "#/components/schemas/StatusType"
+        title:
+          type: string
+        detail:
+          type: string
+    StatusType:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          format: int32
+        reasonPhrase:
+          type: string
+    ConstraintViolationProblem:
+      type: object
+      properties:
+        cause:
+          $ref: "#/components/schemas/ThrowableProblem"
+        stackTrace:
+          type: array
+          items:
+            type: object
+            properties:
+              classLoaderName:
+                type: string
+              moduleName:
+                type: string
+              moduleVersion:
+                type: string
+              methodName:
+                type: string
+              fileName:
+                type: string
+              lineNumber:
+                type: integer
+                format: int32
+              className:
+                type: string
+              nativeMethod:
+                type: boolean
+        type:
+          type: string
+          format: uri
+        status:
+          $ref: "#/components/schemas/StatusType"
+        violations:
+          type: array
+          items:
+            $ref: "#/components/schemas/Violation"
+        title:
+          type: string
+        message:
+          type: string
+        instance:
+          type: string
+          format: uri
+        parameters:
+          type: object
+          additionalProperties:
+            type: object
+        detail:
+          type: string
+        suppressed:
+          type: array
+          items:
+            type: object
+            properties:
+              stackTrace:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    classLoaderName:
+                      type: string
+                    moduleName:
+                      type: string
+                    moduleVersion:
+                      type: string
+                    methodName:
+                      type: string
+                    fileName:
+                      type: string
+                    lineNumber:
+                      type: integer
+                      format: int32
+                    className:
+                      type: string
+                    nativeMethod:
+                      type: boolean
+              message:
+                type: string
+              localizedMessage:
+                type: string
+        localizedMessage:
+          type: string
+    ThrowableProblem:
+      type: object
+      properties:
+        cause:
+          $ref: "#/components/schemas/ThrowableProblem"
+        stackTrace:
+          type: array
+          items:
+            type: object
+            properties:
+              classLoaderName:
+                type: string
+              moduleName:
+                type: string
+              moduleVersion:
+                type: string
+              methodName:
+                type: string
+              fileName:
+                type: string
+              lineNumber:
+                type: integer
+                format: int32
+              className:
+                type: string
+              nativeMethod:
+                type: boolean
+        message:
+          type: string
+        instance:
+          type: string
+          format: uri
+        type:
+          type: string
+          format: uri
+        parameters:
+          type: object
+          additionalProperties:
+            type: object
+        status:
+          $ref: "#/components/schemas/StatusType"
+        title:
+          type: string
+        detail:
+          type: string
+        suppressed:
+          type: array
+          items:
+            type: object
+            properties:
+              stackTrace:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    classLoaderName:
+                      type: string
+                    moduleName:
+                      type: string
+                    moduleVersion:
+                      type: string
+                    methodName:
+                      type: string
+                    fileName:
+                      type: string
+                    lineNumber:
+                      type: integer
+                      format: int32
+                    className:
+                      type: string
+                    nativeMethod:
+                      type: boolean
+              message:
+                type: string
+              localizedMessage:
+                type: string
+        localizedMessage:
+          type: string
+    Violation:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
     PersonGuidBatch:
       type: object
       properties:
         personNumber:
           type: string
+          description: Personal number
           nullable: true
         personId:
           type: string
+          description: Person ID
           format: uuid
           nullable: true
         success:
           type: boolean
+          description: Success status
         errorMessage:
           type: string
+          description: Error message if operation failed
           nullable: true
-      additionalProperties: false
-    ProblemDetails:
+      description: Person GUID batch response model
+    CitizenAddress:
       type: object
       properties:
-        type:
-          type: string
-          nullable: true
-        title:
-          type: string
-          nullable: true
         status:
-          type: integer
-          format: int32
-          nullable: true
-        detail:
           type: string
+          description: Status
           nullable: true
-        instance:
+        nrDate:
           type: string
+          description: NR date
           nullable: true
-      additionalProperties: { }
-  securitySchemes:
-    Bearer:
-      type: apiKey
-      description: JWT Authorization header using the Bearer scheme.
-      name: X-JWT-Assertion
-      in: header
-security:
-  - Bearer: [ ]
-tags:
-  - name: Citizen
-    description: Handles information about Citizens
+        realEstateDescription:
+          type: string
+          description: Real estate description
+          nullable: true
+        co:
+          type: string
+          description: Care of address
+          nullable: true
+        address:
+          type: string
+          description: Address
+          nullable: true
+        addressArea:
+          type: string
+          description: Address area
+          nullable: true
+        addressNumber:
+          type: string
+          description: Address number
+          nullable: true
+        addressLetter:
+          type: string
+          description: Address letter
+          nullable: true
+        apartmentNumber:
+          type: string
+          description: Apartment number
+          nullable: true
+        postalCode:
+          type: string
+          description: Postal code
+          nullable: true
+        city:
+          type: string
+          description: City
+          nullable: true
+        county:
+          type: string
+          description: County
+          nullable: true
+        municipality:
+          type: string
+          description: Municipality
+          nullable: true
+        country:
+          type: string
+          description: Country
+          nullable: true
+        emigrated:
+          type: boolean
+          description: Emigrated status
+          nullable: true
+        addressType:
+          type: string
+          description: Address type
+          nullable: true
+        ycoordLocal:
+          type: number
+          format: double
+        xcoordLocal:
+          type: number
+          format: double
+      description: Citizen address model
+    CitizenExtended:
+      type: object
+      properties:
+        personId:
+          type: string
+          description: Person ID (UUID)
+          format: uuid
+          example: b82bd8ac-1507-4d9a-958d-369261eecc15
+        givenname:
+          type: string
+          description: Given name (förnamn)
+          example: Anders
+        lastname:
+          type: string
+          description: Last name (efternamn)
+          example: Andersson
+        gender:
+          type: string
+          description: Gender
+          example: FEMALE
+        civilStatus:
+          type: string
+          description: Civil status
+          example: MARRIED
+        nrDate:
+          type: string
+          description: NR date
+        personalNumber:
+          type: string
+          description: Personal Number
+          example: 20001212-1212
+        classified:
+          type: string
+          description: Classification status
+          example: PROTECTED
+        protectedNr:
+          type: string
+          description: Protection level
+          example: PROTECTED_IDENTITY
+        addresses:
+          type: array
+          description: Addresses
+          items:
+            $ref: "#/components/schemas/CitizenAddress"
+      description: Citizen model
+    CitizenWithChangedAddress:
+      type: object
+      properties:
+        personId:
+          type: string
+          description: Person ID
+          format: uuid
+          example: b82bd8ac-1507-4d9a-958d-369261eecc15
+        personNumber:
+          type: string
+          description: Personal number
+          nullable: true
+        classified:
+          type: string
+          description: Classification status
+          nullable: true
+        unRegCode:
+          type: string
+          description: Unregistration code
+          nullable: true
+        unRegDate:
+          type: string
+          description: Unregistration date
+          nullable: true
+        gender:
+          type: string
+          description: Gender
+          nullable: true
+        givenname:
+          type: string
+          description: Given name
+          nullable: true
+        lastname:
+          type: string
+          description: Last name
+          nullable: true
+        typeOfSchool:
+          type: string
+          description: Type of school
+          nullable: true
+        addresses:
+          type: array
+          description: Addresses
+          nullable: true
+          items:
+            $ref: "#/components/schemas/CitizenAddress"
+      description: Citizen with changed address model
+  securitySchemes: {}
