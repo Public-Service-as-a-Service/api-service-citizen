@@ -11,57 +11,56 @@ import static org.hamcrest.core.AllOf.allOf;
 
 import java.util.List;
 import java.util.UUID;
-
 import org.junit.jupiter.api.Test;
 
 class FindCitizenBatchRequestTest {
 
-    @Test
-    void testBean() {
-        assertThat(FindCitizenBatchRequest.class, allOf(
-                hasValidBeanConstructor(),
-                hasValidGettersAndSetters(),
-                hasValidBeanHashCode(),
-                hasValidBeanEquals(),
-                hasValidBeanToString()));
-    }
+	@Test
+	void testBean() {
+		assertThat(FindCitizenBatchRequest.class, allOf(
+			hasValidBeanConstructor(),
+			hasValidGettersAndSetters(),
+			hasValidBeanHashCode(),
+			hasValidBeanEquals(),
+			hasValidBeanToString()));
+	}
 
-    @Test
-    void testBuilderMethods() {
-        final var personIds = List.of(UUID.randomUUID(), UUID.randomUUID());
-        final var showClassified = true;
-        final var page = 2;
-        final var limit = 25;
+	@Test
+	void testBuilderMethods() {
+		final var personIds = List.of(UUID.randomUUID(), UUID.randomUUID());
+		final var showClassified = true;
+		final var page = 2;
+		final var limit = 25;
 
-        final var findCitizenBatchRequest = FindCitizenBatchRequest.create()
-                .withPersonIds(personIds)
-                .withShowClassified(showClassified)
-                .withPage(page)
-                .withLimit(limit);
+		final var findCitizenBatchRequest = FindCitizenBatchRequest.create()
+			.withPersonIds(personIds)
+			.withShowClassified(showClassified)
+			.withPage(page)
+			.withLimit(limit);
 
-        assertThat(findCitizenBatchRequest).isNotNull().hasNoNullFieldsOrProperties();
-        assertThat(findCitizenBatchRequest.getPersonIds()).isEqualTo(personIds);
-        assertThat(findCitizenBatchRequest.isShowClassified()).isEqualTo(showClassified);
-        assertThat(findCitizenBatchRequest.getPage()).isEqualTo(page);
-        assertThat(findCitizenBatchRequest.getLimit()).isEqualTo(limit);
-    }
+		assertThat(findCitizenBatchRequest).isNotNull().hasNoNullFieldsOrProperties();
+		assertThat(findCitizenBatchRequest.getPersonIds()).isEqualTo(personIds);
+		assertThat(findCitizenBatchRequest.isShowClassified()).isEqualTo(showClassified);
+		assertThat(findCitizenBatchRequest.getPage()).isEqualTo(page);
+		assertThat(findCitizenBatchRequest.getLimit()).isEqualTo(limit);
+	}
 
-    @Test
-    void testNoDirtOnCreatedBeanExceptDefaultValues() {
-        final var request = FindCitizenBatchRequest.create();
+	@Test
+	void testNoDirtOnCreatedBeanExceptDefaultValues() {
+		final var request = FindCitizenBatchRequest.create();
 
-        assertThat(request.getPersonIds()).isNull();
-        assertThat(request.isShowClassified()).isFalse();
-        assertThat(request.getPage()).isEqualTo(1);
-        assertThat(request.getLimit()).isEqualTo(100);
-    }
+		assertThat(request.getPersonIds()).isNull();
+		assertThat(request.isShowClassified()).isFalse();
+		assertThat(request.getPage()).isEqualTo(1);
+		assertThat(request.getLimit()).isEqualTo(100);
+	}
 
-    @Test
-    void testDefaultValues() {
-        final var request = new FindCitizenBatchRequest();
+	@Test
+	void testDefaultValues() {
+		final var request = new FindCitizenBatchRequest();
 
-        assertThat(request.isShowClassified()).isFalse();
-        assertThat(request.getPage()).isEqualTo(1);
-        assertThat(request.getLimit()).isEqualTo(100);
-    }
+		assertThat(request.isShowClassified()).isFalse();
+		assertThat(request.getPage()).isEqualTo(1);
+		assertThat(request.getLimit()).isEqualTo(100);
+	}
 }

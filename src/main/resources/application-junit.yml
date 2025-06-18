@@ -1,21 +1,23 @@
-spring:
+#========================================
+# Test profile settings (junit tests)
+#========================================
+Spring:
   datasource:
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
-    url: jdbc:tc:mariadb:10.6.4:///
+    url: jdbc:tc:mariadb:10.6.4:///junit-db
   jpa:
-    properties:
-      hibernate:
-        format_sql: true
-        hbm2ddl:
-          schema-generation:
-            script:
-              append: false
-      jakarta:
-        persistence:
-          schema-generation:
-            create-source: metadata
-            database:
-              action: update
-            scripts:
-              action: create
-              create-target: target/database/generated-schema.sql
+    hibernate:
+      ddl-auto: update
+  flyway:
+    enabled: false
+logging:
+  level:
+    root: DEBUG
+
+integration:
+    party:
+      base-url: http://something.com/party
+      oauth2:
+        token-url: http://something.com/token
+        client-id: someClientId
+        client-secret: someClientSecret
