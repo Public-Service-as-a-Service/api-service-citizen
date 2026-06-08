@@ -165,12 +165,12 @@ class CitizenResourceTest {
 			.exchange()
 			.expectStatus().isOk()
 			.expectHeader().contentType(APPLICATION_JSON)
-			.expectBody(String.class)
+			.expectBody(UUID.class)
 			.returnResult()
 			.getResponseBody();
 
-		// Assert
-		assertThat(response).isEqualTo(personId);
+		// Assert — endpoint returns the guid as a UUID (serialised as a quoted JSON string)
+		assertThat(response).isEqualTo(UUID.fromString(personId));
 		verify(citizenServiceMock).getPersonIdByPersonalNumber(personalNumber, municipalityId);
 	}
 

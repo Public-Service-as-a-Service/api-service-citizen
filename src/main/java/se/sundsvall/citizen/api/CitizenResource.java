@@ -92,12 +92,13 @@ public class CitizenResource {
 	@Operation(summary = "Get the personId from Personal identity number")
 	@ApiResponse(responseCode = "200", description = "Success")
 	@ApiResponse(responseCode = "204", description = "No Content")
-	@ApiResponse(responseCode = "404", description = "Not Found")
-	public ResponseEntity<String> getPersonIdByPersonalNumber(
+	public ResponseEntity<UUID> getPersonIdByPersonalNumber(
 		@Parameter(description = "Personal identity number for specific citizen") @PathVariable final String personNumber, @RequestParam("municipalityId") final String municipalityId) {
 
-		var response = citizenService.getPersonIdByPersonalNumber(personNumber, municipalityId);
-		return response != null ? ok(response) : ResponseEntity.noContent().build();
+		// Return the guid as a UUID so it serialises as a proper JSON string ("..."); returning a raw
+		// String here yields an unquoted body that JSON-decoding clients (rtj-management) cannot parse.
+		final var response = citizenService.getPersonIdByPersonalNumber(personNumber, municipalityId);
+		return response != null ? ok(UUID.fromString(response)) : ResponseEntity.noContent().build();
 	}
 
 	@PostMapping(path = "/guid/batch", produces = APPLICATION_JSON_VALUE)

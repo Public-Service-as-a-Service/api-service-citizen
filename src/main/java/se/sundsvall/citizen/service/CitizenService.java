@@ -24,7 +24,6 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static se.sundsvall.citizen.service.ServiceConstants.ERROR_CITIZEN_NOT_FOUND;
-import static se.sundsvall.citizen.service.ServiceConstants.ERROR_PERSONAL_NUMBER_NOT_FOUND;
 
 @Service
 @Transactional
@@ -87,9 +86,10 @@ public class CitizenService {
 			return localMatch.get().getPersonId();
 		}
 
-		return partyIntegration.getPartyId(personNumber, municipalityId, "PRIVATE")
-			.orElseThrow(() -> Problem.valueOf(NOT_FOUND,
-				format(ERROR_PERSONAL_NUMBER_NOT_FOUND)));
+		// Not found -> return null so the resource answers 204 No Content (matching the real citizen API,
+		// which rtj-management's CitizenClient expects). Throwing 404 here would trip the Feign
+		// CircuitBreaker on rtj's side for ordinary "person not seeded" lookups.
+		return partyIntegration.getPartyId(personNumber, municipalityId, "PRIVATE").orElse(null);
 	}
 
 	public List<PersonGuidBatch> getPersonIdsInBatch(List<String> personalNumbers) {

@@ -254,18 +254,16 @@ class CitizenServiceTest {
 
 	@Test
 	void getPersonIdByPersonalNumber_NotFound() {
-		// Arrange
+		// Arrange — not in local DB and Party has no match -> null (resource answers 204, not 404)
 		final var personalNumber = "198001011234";
 		final var municipalityId = "2181";
 		when(citizenRepositoryMock.findByPersonalNumber(personalNumber)).thenReturn(Optional.empty());
 
-		// Act & Assert
-		final var exception = assertThrows(ThrowableProblem.class,
-			() -> citizenService.getPersonIdByPersonalNumber(personalNumber, municipalityId));
+		// Act
+		final var result = citizenService.getPersonIdByPersonalNumber(personalNumber, municipalityId);
 
-		assertThat(exception.getStatus()).isEqualTo(NOT_FOUND);
-		assertThat(exception.getMessage())
-			.contains("No citizen found with that personal number");
+		// Assert
+		assertThat(result).isNull();
 	}
 
 	@Test
