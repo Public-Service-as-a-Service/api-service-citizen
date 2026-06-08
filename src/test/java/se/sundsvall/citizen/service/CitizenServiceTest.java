@@ -25,7 +25,6 @@ import se.sundsvall.citizen.integration.party.PartyIntegration;
 import se.sundsvall.citizen.service.mapper.CitizenAddressMapper;
 import se.sundsvall.citizen.service.mapper.CitizenMapper;
 import se.sundsvall.dept44.problem.ThrowableProblem;
-import tools.jackson.databind.ObjectMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -46,9 +45,6 @@ class CitizenServiceTest {
 
 	@Mock
 	private CitizenAddressRepository citizenAddressRepositoryMock;
-
-	@Mock
-	private ObjectMapper objectMapperMock;
 
 	@InjectMocks
 	private CitizenService citizenService;
@@ -352,7 +348,6 @@ class CitizenServiceTest {
 		assertThat(exception.getStatus()).isEqualTo(CONFLICT);
 		assertThat(exception.getMessage())
 			.contains("Person with personal number 198001011234 already exists");
-		verifyNoInteractions(objectMapperMock);
 	}
 
 	@Test
@@ -363,6 +358,72 @@ class CitizenServiceTest {
 
 		assertThat(exception.getStatus()).isEqualTo(BAD_REQUEST);
 		assertThat(exception.getMessage()).contains("Personal number is required");
-		verifyNoInteractions(citizenRepositoryMock, objectMapperMock);
+		verifyNoInteractions(citizenRepositoryMock);
+	}
+
+	@Test
+	void createCitizen() {
+		// Arrange
+		final var personId = UUID.randomUUID();
+		final var input = CitizenExtended.create()
+			.withPersonalNumber("199001011234")
+			.withGivenname("Auto")
+			.withLastname("Godkand");
+		final var savedEntity = CitizenEntity.create()
+			.withPersonId(personId.toString())
+			.withPersonalNumber("199001011234")
+			.withGivenname("Auto")
+			.withLastname("Godkand");
+
+		when(citizenRepositoryMock.findByPersonalNumber("199001011234")).thenReturn(Optional.empty());
+		when(citizenRepositoryMock.save(any())).thenReturn(savedEntity);
+
+		// Act
+		final var result = citizenService.createCitizen(input);
+
+		// Assert
+		assertThat(result).isNotNull();
+		assertThat(result.getPersonId()).isEqualTo(personId);
+		assertThat(result.getPersonalNumber()).isEqualTo("199001011234");
+		assertThat(result.getGivenname()).isEqualTo("Auto");
+		verify(citizenRepositoryMock).save(any());
+	}
+
+	@Test
+	void createCitizen_AlreadyExists() {
+		// Arrange
+		final var input = CitizenExtended.create().withPersonalNumber("199001011234");
+		when(citizenRepositoryMock.findByPersonalNumber("199001011234"))
+			.thenReturn(Optional.of(new CitizenEntity()));
+
+		// Act & Assert
+		final var exception = assertThrows(ThrowableProblem.class,
+			() -> citizenService.createCitizen(input));
+
+		assertThat(exception.getStatus()).isEqualTo(CONFLICT);
+		assertThat(exception.getMessage())
+			.contains("Person with personal number 199001011234 already exists");
+	}
+
+	@Test
+	void createCitizen_NullInput() {
+		final var exception = assertThrows(ThrowableProblem.class,
+			() -> citizenService.createCitizen(null));
+
+		assertThat(exception.getStatus()).isEqualTo(BAD_REQUEST);
+		assertThat(exception.getMessage()).contains("Personal number is required");
+		verifyNoInteractions(citizenRepositoryMock);
+	}
+
+	@Test
+	void createCitizen_BlankPersonalNumber() {
+		final var input = CitizenExtended.create().withPersonalNumber("  ");
+
+		final var exception = assertThrows(ThrowableProblem.class,
+			() -> citizenService.createCitizen(input));
+
+		assertThat(exception.getStatus()).isEqualTo(BAD_REQUEST);
+		assertThat(exception.getMessage()).contains("Personal number is required");
+		verifyNoInteractions(citizenRepositoryMock);
 	}
 }

@@ -18,7 +18,6 @@ import se.sundsvall.citizen.integration.party.PartyIntegration;
 import se.sundsvall.citizen.service.mapper.CitizenAddressMapper;
 import se.sundsvall.citizen.service.mapper.CitizenMapper;
 import se.sundsvall.dept44.problem.Problem;
-import tools.jackson.databind.ObjectMapper;
 
 import static java.lang.String.format;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -33,15 +32,13 @@ public class CitizenService {
 
 	private final CitizenRepository citizenRepository;
 	private final CitizenAddressRepository citizenAddressRepository;
-	private final ObjectMapper objectMapper;
 	private final PartyIntegration partyIntegration;
 
 	public CitizenService(CitizenRepository citizenRepository,
 		CitizenAddressRepository citizenAddressRepository,
-		ObjectMapper objectMapper, PartyIntegration partyIntegration) {
+		PartyIntegration partyIntegration) {
 		this.citizenRepository = citizenRepository;
 		this.citizenAddressRepository = citizenAddressRepository;
-		this.objectMapper = objectMapper;
 		this.partyIntegration = partyIntegration;
 	}
 

@@ -11,14 +11,10 @@ spring:
     name: api-citizen
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-  flyway:
-    enabled: false
-    baseline-on-migrate: true
   jpa:
     hibernate:
-      # 'update' (not the JPA 'create' action) so seeded/created test persons survive restarts and
-      # Dokploy redeploys. Flyway stays off — this repo's migrations live in a literal 'db.migration'
-      # folder with a malformed V1_0_ filename, so Hibernate owns the schema for this POC mock.
+      # Hibernate owns the schema for this POC mock. 'update' (not 'create') so seeded/created test
+      # persons survive restarts and Dokploy redeploys.
       ddl-auto: update
 springdoc:
   swagger-ui:

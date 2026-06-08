@@ -16,7 +16,7 @@ WORKDIR /app
 
 RUN useradd -u 10001 -r -s /usr/sbin/nologin appuser
 
-COPY --from=build /build/target/template-spring-boot-*.jar /app/app.jar
+COPY --from=build /build/target/api-service-citizen-*.jar /app/app.jar
 
 RUN chown -R appuser:appuser /app
 USER appuser

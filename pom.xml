@@ -10,15 +10,9 @@
 		<!-- lookup parent from repository -->
 	</parent>
 	<groupId>se.sundsvall</groupId>
-	<artifactId>template-spring-boot</artifactId>
+	<artifactId>api-service-citizen</artifactId>
 	<version>1.0</version>
-	<name>template</name>
-	<properties>
-		<generated-sources-path>${project.build.directory}/generated-sources</generated-sources-path>
-		<generated-sources-java-path>src/main/java</generated-sources-java-path>
-		<org.testcontainers.mariadb-version>1.19.1</org.testcontainers.mariadb-version>
-		<org.junit.jupiter-version>5.10.2</org.junit.jupiter-version>
-	</properties>
+	<name>api-service-citizen</name>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -44,80 +38,22 @@
 		</dependency>
 		<!-- Test -->
 		<dependency>
-			<groupId>org.testcontainers</groupId>
-			<artifactId>mariadb</artifactId>
-			<version>${org.testcontainers.mariadb-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.testcontainers</groupId>
-			<artifactId>jdbc</artifactId>
-			<version>1.19.1</version>
-		</dependency>
-		<dependency>
 			<groupId>se.sundsvall.dept44</groupId>
 			<artifactId>dept44-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
-		<!-- Test -->
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter</artifactId>
-			<version>${org.junit.jupiter-version}</version>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- dept44 8 JPA test slice: brings spring-boot-starter-data-jpa-test (@DataJpaTest,
+				@AutoConfigureTestDatabase) + testcontainers-mariadb for the repository tests. -->
+		<dependency>
+			<groupId>se.sundsvall.dept44</groupId>
+			<artifactId>dept44-starter-jpa-test</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.openapitools</groupId>
-				<artifactId>openapi-generator-maven-plugin</artifactId>
-				<configuration>
-					<inputSpec>${project.basedir}/src/main/resources/integrations/party-api.yml</inputSpec>
-					<output>${generated-sources-path}</output>
-					<generatorName>spring</generatorName>
-					<!-- Models only. The Party client/models are hand-written and unused-by-generated-code;
-							generating APIs + supporting files emitted a `generated.ApiDocsApiController` that
-							clashed with dept44's built-in GET /api-docs (ambiguous mapping → startup failure). -->
-					<generateApis>false</generateApis>
-					<generateSupportingFiles>false</generateSupportingFiles>
-					<configOptions>
-						<sourceFolder>${generated-sources-java-path}</sourceFolder>
-						<generateSupportingFiles>false</generateSupportingFiles>
-						<generatedConstructorWithRequiredArgs>true</generatedConstructorWithRequiredArgs>
-						<generatePom>true</generatePom>
-						<library>spring-boot</library>
-						<dateLibrary>java8</dateLibrary>
-						<apiPackage>generated</apiPackage>
-						<openApiNullable>false</openApiNullable>
-						<useSwaggerUi>true</useSwaggerUi>
-						<useBeanValidation>true</useBeanValidation>
-						<useSwaggerAnnotations>true</useSwaggerAnnotations>
-						<hideGenerationTimestamp>true</hideGenerationTimestamp>
-						<interfaceOnly>false</interfaceOnly>
-						<useSpringBoot3>true</useSpringBoot3>
-					</configOptions>
-				</configuration>
-				<executions>
-					<execution>
-						<id>party-api</id>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-						<configuration>
-							<inputSpec>${project.basedir}/src/main/resources/integrations/party-api.yml</inputSpec>
-							<configOptions>
-								<modelPackage>generated.se.sundsvall.party</modelPackage>
-							</configOptions>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
 </project>

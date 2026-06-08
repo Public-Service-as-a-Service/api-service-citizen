@@ -10,6 +10,7 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import se.sundsvall.citizen.api.model.CitizenAddress;
+import se.sundsvall.citizen.api.model.CitizenExtended;
 import se.sundsvall.citizen.integration.db.model.CitizenAddressEntity;
 import se.sundsvall.citizen.integration.db.model.CitizenEntity;
 
@@ -131,5 +132,73 @@ class CitizenMapperTest {
 
 			addressMapperMock.verify(() -> CitizenAddressMapper.toCitizenAddresses(Collections.emptyList()));
 		}
+	}
+
+	@Test
+	void toCitizenEntity() {
+		// Arrange
+		final var personalNumber = "199001011234";
+		final var givenname = "Auto";
+		final var lastname = "Godkand";
+		final var gender = "MALE";
+		final var civilStatus = "SINGLE";
+		final var classified = "classified";
+		final var protectedNr = "protectedNr";
+		final var inputAddress = new CitizenAddress();
+		final var mappedAddressEntity = CitizenAddressEntity.create();
+
+		final var citizen = CitizenExtended.create()
+			.withPersonalNumber(personalNumber)
+			.withGivenname(givenname)
+			.withLastname(lastname)
+			.withGender(gender)
+			.withCivilStatus(civilStatus)
+			.withClassified(classified)
+			.withProtectedNr(protectedNr)
+			.withAddresses(List.of(inputAddress));
+
+		try (MockedStatic<CitizenAddressMapper> addressMapperMock = Mockito.mockStatic(CitizenAddressMapper.class)) {
+			addressMapperMock.when(() -> CitizenAddressMapper.toCitizenAddressEntity(inputAddress))
+				.thenReturn(mappedAddressEntity);
+
+			// Act
+			final var result = CitizenMapper.toCitizenEntity(citizen);
+
+			// Assert
+			assertThat(result).isNotNull();
+			assertThat(result.getPersonId()).isNull();
+			assertThat(result.getPersonalNumber()).isEqualTo(personalNumber);
+			assertThat(result.getGivenname()).isEqualTo(givenname);
+			assertThat(result.getLastname()).isEqualTo(lastname);
+			assertThat(result.getGender()).isEqualTo(gender);
+			assertThat(result.getCivilStatus()).isEqualTo(civilStatus);
+			assertThat(result.getClassified()).isEqualTo(classified);
+			assertThat(result.getProtectedNr()).isEqualTo(protectedNr);
+			assertThat(result.getAddresses()).hasSize(1);
+			// reference checks (entity equals() is bidirectional, so avoid equals-based assertions)
+			assertThat(result.getAddresses().get(0)).isSameAs(mappedAddressEntity);
+			assertThat(mappedAddressEntity.getCitizen()).isSameAs(result);
+
+			addressMapperMock.verify(() -> CitizenAddressMapper.toCitizenAddressEntity(inputAddress));
+		}
+	}
+
+	@Test
+	void toCitizenEntity_Null() {
+		assertThat(CitizenMapper.toCitizenEntity(null)).isNull();
+	}
+
+	@Test
+	void toCitizenEntity_NullAddresses() {
+		// Arrange
+		final var citizen = CitizenExtended.create().withPersonalNumber("199001011234");
+
+		// Act
+		final var result = CitizenMapper.toCitizenEntity(citizen);
+
+		// Assert
+		assertThat(result).isNotNull();
+		assertThat(result.getPersonalNumber()).isEqualTo("199001011234");
+		assertThat(result.getAddresses()).isEmpty();
 	}
 }

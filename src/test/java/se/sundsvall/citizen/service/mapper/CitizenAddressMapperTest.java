@@ -186,4 +186,56 @@ class CitizenAddressMapperTest {
 				assertThat(address.getYCoordLocal()).isNull();
 			});
 	}
+
+	@Test
+	void toCitizenAddressEntity() {
+		// Arrange
+		final var address = CitizenAddress.create()
+			.withStatus("status")
+			.withRealEstateDescription("Sundsvall Stenstaden 1:23")
+			.withCo("co")
+			.withAddress("Storgatan 5")
+			.withAddressArea("addressArea")
+			.withAddressNumber("addressNumber")
+			.withAddressLetter("addressLetter")
+			.withApartmentNumber("apartmentNumber")
+			.withPostalCode("85230")
+			.withCity("Sundsvall")
+			.withCounty("county")
+			.withMunicipality("2281")
+			.withCountry("Sverige")
+			.withEmigrated(false)
+			.withAddressType("POPULATION_REGISTRATION_ADDRESS")
+			.withXCoordLocal(123.456)
+			.withYCoordLocal(789.012);
+
+		// Act
+		final var result = CitizenAddressMapper.toCitizenAddressEntity(address);
+
+		// Assert
+		assertThat(result).isNotNull();
+		assertThat(result.getCitizen()).isNull();
+		assertThat(result.getStatus()).isEqualTo("status");
+		assertThat(result.getRealEstateDescription()).isEqualTo("Sundsvall Stenstaden 1:23");
+		assertThat(result.getCo()).isEqualTo("co");
+		assertThat(result.getAddress()).isEqualTo("Storgatan 5");
+		assertThat(result.getAddressArea()).isEqualTo("addressArea");
+		assertThat(result.getAddressNumber()).isEqualTo("addressNumber");
+		assertThat(result.getAddressLetter()).isEqualTo("addressLetter");
+		assertThat(result.getApartmentNumber()).isEqualTo("apartmentNumber");
+		assertThat(result.getPostalCode()).isEqualTo("85230");
+		assertThat(result.getCity()).isEqualTo("Sundsvall");
+		assertThat(result.getCounty()).isEqualTo("county");
+		assertThat(result.getMunicipality()).isEqualTo("2281");
+		assertThat(result.getCountry()).isEqualTo("Sverige");
+		assertThat(result.getEmigrated()).isFalse();
+		assertThat(result.getAddressType()).isEqualTo("POPULATION_REGISTRATION_ADDRESS");
+		assertThat(result.getXCoordLocal()).isEqualTo(123.456);
+		assertThat(result.getYCoordLocal()).isEqualTo(789.012);
+	}
+
+	@Test
+	void toCitizenAddressEntity_Null() {
+		assertThat(CitizenAddressMapper.toCitizenAddressEntity(null)).isNull();
+	}
 }
