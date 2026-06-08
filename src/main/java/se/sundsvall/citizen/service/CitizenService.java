@@ -82,20 +82,17 @@ public class CitizenService {
 	}
 
 	public String getPersonIdByPersonalNumber(final String personNumber, final String municipalityId) {
-		if (!Objects.equals(municipalityId, "2281")) {
-			final var citizenEntity = citizenRepository.findByPersonalNumber(personNumber)
-				.orElseThrow(() -> Problem.valueOf(NOT_FOUND,
-					format(ERROR_PERSONAL_NUMBER_NOT_FOUND)));
-
-			return citizenEntity.getPersonId();
-		} else {
-			// Gå mot Party
-			final String type = "PRIVATE";
-
-			return partyIntegration.getPartyId(personNumber, municipalityId, type)
-				.orElseThrow(() -> Problem.valueOf(NOT_FOUND,
-					format(ERROR_PERSONAL_NUMBER_NOT_FOUND)));
+		// POC: the self-hosted citizen mock is authoritative. Resolve seeded/created test persons from
+		// the local DB for EVERY municipality — including 2281, which upstream routes straight to the
+		// real Party service. Party is kept only as a fallback for numbers never created in this mock.
+		final var localMatch = citizenRepository.findByPersonalNumber(personNumber);
+		if (localMatch.isPresent()) {
+			return localMatch.get().getPersonId();
 		}
+
+		return partyIntegration.getPartyId(personNumber, municipalityId, "PRIVATE")
+			.orElseThrow(() -> Problem.valueOf(NOT_FOUND,
+				format(ERROR_PERSONAL_NUMBER_NOT_FOUND)));
 	}
 
 	public List<PersonGuidBatch> getPersonIdsInBatch(List<String> personalNumbers) {
@@ -139,5 +136,25 @@ public class CitizenService {
 
 		var savedEntity = citizenRepository.save(citizenEntity);
 		return UUID.fromString(savedEntity.getPersonId());
+	}
+
+	/**
+	 * Create a fully-formed test citizen — name, civil status and (crucially) folkbokföring addresses —
+	 * in a single call. Added for the egensotning POC so the frontend can seed a person that is
+	 * registered (POPULATION_REGISTRATION_ADDRESS) at a given property, which the auto-approve
+	 * folkbokföringskontroll requires. The generated personId is returned on the response.
+	 */
+	public CitizenExtended createCitizen(final CitizenExtended citizen) {
+		if (citizen == null || citizen.getPersonalNumber() == null || citizen.getPersonalNumber().isBlank()) {
+			throw Problem.valueOf(BAD_REQUEST, "Personal number is required");
+		}
+
+		if (citizenRepository.findByPersonalNumber(citizen.getPersonalNumber()).isPresent()) {
+			throw Problem.valueOf(CONFLICT,
+				format("Person with personal number %s already exists", citizen.getPersonalNumber()));
+		}
+
+		final var savedEntity = citizenRepository.save(CitizenMapper.toCitizenEntity(citizen));
+		return CitizenMapper.toCitizenExtended(savedEntity);
 	}
 }

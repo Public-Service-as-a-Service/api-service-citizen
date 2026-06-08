@@ -118,4 +118,14 @@ public class CitizenResource {
 
 		return ok(citizenService.createPerson(person));
 	}
+
+	@PostMapping(produces = APPLICATION_JSON_VALUE)
+	@Operation(summary = "Create a fully-formed test citizen, incl. folkbokföring addresses (test-data seeding)")
+	@ApiResponse(responseCode = "200", description = "Success")
+	@ApiResponse(responseCode = "409", description = "Conflict")
+	public ResponseEntity<CitizenExtended> createCitizen(
+		@Valid @RequestBody final CitizenExtended citizen) {
+
+		return ok(citizenService.createCitizen(citizen));
+	}
 }

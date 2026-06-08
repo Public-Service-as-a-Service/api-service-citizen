@@ -15,12 +15,22 @@ spring:
     enabled: false
     baseline-on-migrate: true
   jpa:
-    properties:
-      jakarta:
-        persistence:
-          schema-generation:
-            database:
-              action: create
+    hibernate:
+      # 'update' (not the JPA 'create' action) so seeded/created test persons survive restarts and
+      # Dokploy redeploys. Flyway stays off — this repo's migrations live in a literal 'db.migration'
+      # folder with a malformed V1_0_ filename, so Hibernate owns the schema for this POC mock.
+      ddl-auto: update
 springdoc:
   swagger-ui:
     operationsSorter: method
+
+# Party is unused by the POC egensotning flow — the citizen mock resolves test persons from its own
+# DB for every municipality (incl. 2281). But the Party Feign client's @ConfigurationProperties are
+# validated at startup, so provide overridable dummy values rather than real api-test credentials.
+integration:
+  party:
+    base-url: ${PARTY_BASE_URL:http://localhost:9999}
+    oauth2:
+      token-url: ${PARTY_TOKEN_URL:http://localhost:9999/token}
+      client-id: ${PARTY_CLIENT_ID:dummy}
+      client-secret: ${PARTY_CLIENT_SECRET:dummy}

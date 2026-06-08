@@ -48,9 +48,9 @@ _Manage citizen data._
 
 This microservice depends on the following services:
 - **Party**
-    - **Purpose:** Is used to convert the personal number of the citizens to a partyId.
-    - **Repository:** [https://github.com/Sundsvallskommun/api-service-party](https://github.com/Sundsvallskommun/api-service-party.git)
-    - **Setup Instructions:** See documentation in repository above for installation and configuration steps.
+- **Purpose:** Is used to convert the personal number of the citizens to a partyId.
+- **Repository:** [https://github.com/Sundsvallskommun/api-service-party](https://github.com/Sundsvallskommun/api-service-party.git)
+- **Setup Instructions:** See documentation in repository above for installation and configuration steps.
 
 Ensure that these services are running and properly configured before starting this microservice.
 
