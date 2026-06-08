@@ -1,7 +1,5 @@
 package se.sundsvall.citizen.api.model;
 
-import static java.lang.Integer.parseInt;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -9,6 +7,8 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import java.util.List;
 import java.util.Objects;
+
+import static java.lang.Integer.parseInt;
 
 @Schema(description = "FindPersonGuidBatchRequest model")
 public class FindPersonGuidBatchRequest {

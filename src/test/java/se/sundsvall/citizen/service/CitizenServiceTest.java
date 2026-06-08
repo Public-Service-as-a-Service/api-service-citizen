@@ -1,17 +1,5 @@
 package se.sundsvall.citizen.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.same;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.when;
-import static org.zalando.problem.Status.BAD_REQUEST;
-import static org.zalando.problem.Status.CONFLICT;
-import static org.zalando.problem.Status.NOT_FOUND;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +13,6 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.jpa.domain.Specification;
-import org.zalando.problem.ThrowableProblem;
 import se.sundsvall.citizen.api.model.CitizenExtended;
 import se.sundsvall.citizen.api.model.CitizenWithChangedAddress;
 import se.sundsvall.citizen.api.model.ModelPostPerson;
@@ -37,6 +24,19 @@ import se.sundsvall.citizen.integration.db.specification.CitizenAddressSpecifica
 import se.sundsvall.citizen.integration.party.PartyIntegration;
 import se.sundsvall.citizen.service.mapper.CitizenAddressMapper;
 import se.sundsvall.citizen.service.mapper.CitizenMapper;
+import se.sundsvall.dept44.problem.ThrowableProblem;
+import tools.jackson.databind.ObjectMapper;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.same;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CONFLICT;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @ExtendWith(MockitoExtension.class)
 class CitizenServiceTest {

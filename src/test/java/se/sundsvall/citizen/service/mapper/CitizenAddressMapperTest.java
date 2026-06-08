@@ -1,8 +1,5 @@
 package se.sundsvall.citizen.service.mapper;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.groups.Tuple.tuple;
-
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -10,6 +7,9 @@ import org.junit.jupiter.api.Test;
 import se.sundsvall.citizen.api.model.CitizenAddress;
 import se.sundsvall.citizen.integration.db.model.CitizenAddressEntity;
 import se.sundsvall.citizen.integration.db.model.CitizenEntity;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.groups.Tuple.tuple;
 
 class CitizenAddressMapperTest {
 

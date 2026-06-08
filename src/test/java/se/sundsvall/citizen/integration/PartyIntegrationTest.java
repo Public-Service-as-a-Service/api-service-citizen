@@ -1,8 +1,5 @@
 package se.sundsvall.citizen.integration;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
-
 import feign.FeignException;
 import java.util.Optional;
 import java.util.UUID;
@@ -13,6 +10,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import se.sundsvall.citizen.integration.party.PartyClient;
 import se.sundsvall.citizen.integration.party.PartyIntegration;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class PartyIntegrationTest {

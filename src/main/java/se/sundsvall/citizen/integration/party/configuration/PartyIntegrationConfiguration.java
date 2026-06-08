@@ -1,8 +1,5 @@
 package se.sundsvall.citizen.integration.party.configuration;
 
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-
 import feign.Request;
 import java.util.List;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -14,6 +11,9 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import se.sundsvall.dept44.configuration.feign.FeignConfiguration;
 import se.sundsvall.dept44.configuration.feign.FeignMultiCustomizer;
 import se.sundsvall.dept44.configuration.feign.decoder.ProblemErrorDecoder;
+
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Import(FeignConfiguration.class)
 @EnableConfigurationProperties(PartyIntegrationProperties.class)
