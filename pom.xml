@@ -85,11 +85,14 @@
 					<inputSpec>${project.basedir}/src/main/resources/integrations/party-api.yml</inputSpec>
 					<output>${generated-sources-path}</output>
 					<generatorName>spring</generatorName>
-					<generateApis>true</generateApis>
-					<generateSupportingFiles>true</generateSupportingFiles>
+					<!-- Models only. The Party client/models are hand-written and unused-by-generated-code;
+							generating APIs + supporting files emitted a `generated.ApiDocsApiController` that
+							clashed with dept44's built-in GET /api-docs (ambiguous mapping → startup failure). -->
+					<generateApis>false</generateApis>
+					<generateSupportingFiles>false</generateSupportingFiles>
 					<configOptions>
 						<sourceFolder>${generated-sources-java-path}</sourceFolder>
-						<generateSupportingFiles>true</generateSupportingFiles>
+						<generateSupportingFiles>false</generateSupportingFiles>
 						<generatedConstructorWithRequiredArgs>true</generatedConstructorWithRequiredArgs>
 						<generatePom>true</generatePom>
 						<library>spring-boot</library>
